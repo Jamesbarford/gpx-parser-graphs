@@ -1,39 +1,36 @@
 import { UploadGPXActions, UploadGPXActionTypes } from "./actions";
 import { Initial, Loading, RequestState, Success } from "../../../lib/persistance";
+import { shallowUpdate } from "../../../lib/util";
 
-export interface RunDataState {
+export interface UploadGpxState {
     requestState: RequestState;
 }
 
-function initState(): RunDataState {
+function initState(): UploadGpxState {
     return {
         requestState: new Initial()
     };
 }
 
-export function runDataReducer(state: RunDataState = initState(), action: UploadGPXActions) {
+export function uploadGpxReducer(state: UploadGpxState = initState(), action: UploadGPXActions) {
     switch (action.type) {
         case UploadGPXActionTypes.UploadGPXFileFailure:
-            return updateState(state, {
+            return shallowUpdate(state, {
                 requestState: action.requestError
             });
 
 
         case UploadGPXActionTypes.UploadGPXFileStart:
-            return updateState(state, {
+            return shallowUpdate(state, {
                 requestState: new Loading()
             });
 
         case UploadGPXActionTypes.UploadGPXFileSuccess:
-            return updateState(state, {
+            return shallowUpdate(state, {
                 requestState: new Success()
             });
 
         default:
             return state;
     }
-}
-
-function updateState(state: RunDataState, patch: Partial<RunDataState>): RunDataState {
-    return Object.assign({}, state, patch);
 }
