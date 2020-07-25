@@ -33,23 +33,15 @@ interface GPXasJSON {
 export async function getGPXasJSON(xmlString: any): Promise<GPXasJSON | void> {
     const xmlParser = new Parser();
 
-    let xmlData: any
-
-    try {
-        xmlData = await xmlParser.parseStringPromise(xmlString)
-    } catch (e) {
-        throw new Error(`Failed to parse file: ${e}`);
-    }
-
-    if (isNil(xmlData)) return;
-
     let stravaRun: StravaRun;
 
     try {
-        stravaRun = toStravaRun(xmlData);
+        const xmlData = await xmlParser.parseStringPromise(xmlString);
+        if (isNil(xmlData)) throw new Error("Invalid GPX file");
 
+        stravaRun = toStravaRun(xmlData);
     } catch (e) {
-        return;
+        throw new Error(`Failed to parse file: ${e}`);
     }
 
     const stravaDatums = stravaRun.datum;

@@ -21,7 +21,12 @@ const plugins = [
 ];
 
 if (development) {
-    plugins.push(new ForkTsCheckerWebpackPlugin({ eslint: true }));
+    plugins.push(new ForkTsCheckerWebpackPlugin({
+        eslint: {
+            enabled: true,
+            files: "./src/*"
+        }
+    }));
 }
 
 if (production) {
@@ -29,7 +34,7 @@ if (production) {
 }
 
 const WebpackConfig = {
-    entry: ["core-js/stable", "./src/index.ts"],
+    entry: ["core-js/stable", "./src/index.tsx"],
     mode,
     output: {
         filename: "[name].[contenthash].js",
@@ -99,8 +104,7 @@ const WebpackConfig = {
     },
     devtool: development ? "inline-source-map" : "source-map",
     resolve: {
-        extensions: [".js", ".json", ".ts"],
-        modules: [path.resolve("./node_modules")]
+        extensions: [".js", ".json", ".ts", ".tsx"]
     },
     devServer: {
         contentBase: "./dist",
@@ -118,7 +122,7 @@ const WebpackConfig = {
     module: {
         rules: [
             {
-                test: /\.(ts)$/,
+                test: /\.(ts|tsx)$/,
                 exclude: /node_modules/,
                 use: [
                     {

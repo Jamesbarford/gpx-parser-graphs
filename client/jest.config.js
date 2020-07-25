@@ -15,6 +15,6 @@ module.exports = {
             }
         }
     },
-    testRegex: "(/__tests__/.*|(\\.|/)(test|spec|unit))\\.(ts)?$",
-    moduleFileExtensions: ["ts", "js", "json", "node"],
+    testRegex: "(/__tests__/.*|(\\.|/)(test|spec|unit))\\.(ts|tsx)?$",
+    moduleFileExtensions: ["ts", "js", "json", "node", "tsx"],
 };

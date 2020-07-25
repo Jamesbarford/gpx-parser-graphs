@@ -2,7 +2,7 @@ import { isNil } from "lodash";
 
 import { CancelableRequest, HttpReqMethod, MakeXMLRequest } from "./MakeXMLRequest";
 
-export async function uploadGPXFile(gpxFile: File) {
+export async function postGPXFileReq(gpxFile: File) {
     const fileReader = new FileReader();
 
     let req: CancelableRequest;
