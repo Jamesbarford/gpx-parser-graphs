@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2018", "dom"],
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "allowJs": false,
+    "strictNullChecks": true,
+    "downlevelIteration": true
+  },
+  "exclude": ["node_modules"]
+}
