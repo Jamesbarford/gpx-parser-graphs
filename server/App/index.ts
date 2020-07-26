@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
+import morgan from "morgan";
 
 import { getGPXasJSON } from "./stravaGPXParser";
-import { log } from "./log";
 import { Success } from "./Response/Success";
 import { RequestError } from "./Response/Errors";
 
@@ -11,6 +11,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(morgan("dev"));
 
 const Router = express.Router();
 
@@ -21,8 +22,6 @@ Router.get("/", async (req, res) => {
 });
 
 Router.post("/upload", async (req, res) => {
-    log(req.body);
-
     try {
         const data = await getGPXasJSON(req.body.data);
         res.send(new Success(200, data));
