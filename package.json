@@ -1,0 +1,22 @@
+{
+  "name": "gpx-parser",
+  "version": "1.0.0",
+  "description": "Facilitates parsing a GPX file from Garmin or Strava into JSON. The parser is wrapper in a small nodeJS express app.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jamesbarford/gpx-parser-graphs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jamesbarford/gpx-parser-graphs/issues"
+  },
+  "homepage": "https://github.com/Jamesbarford/gpx-parser-graphs#readme",
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  }
+}

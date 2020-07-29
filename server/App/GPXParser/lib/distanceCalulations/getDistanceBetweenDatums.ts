@@ -1,6 +1,6 @@
-import { StravaDataPoint } from "../../model/StravaDataPoint";
+import { ActivityDataPoint } from "../../model/ActivityDataPoint";
 
-export function getDistanceBetweenDatums(datumOne: StravaDataPoint, datumTwo: StravaDataPoint): number {
+export function getDistanceBetweenDatums(datumOne: ActivityDataPoint, datumTwo: ActivityDataPoint): number {
     return getDistanceFromLatLonInKm(datumOne.lat, datumOne.lon, datumTwo.lat, datumTwo.lon);
 }
 

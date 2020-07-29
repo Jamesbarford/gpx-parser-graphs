@@ -1,8 +1,8 @@
 import { differenceInSeconds } from "date-fns";
 
-import { StravaDataPoint } from "../../model/StravaDataPoint";
+import { ActivityDataPoint } from "../../model/ActivityDataPoint";
 
-export function getTotalTimeInMinutes(datums: Array<StravaDataPoint>) {
+export function getTotalTimeInMinutes(datums: Array<ActivityDataPoint>) {
     const first = datums[0];
     const last = datums[datums.length - 1];
 

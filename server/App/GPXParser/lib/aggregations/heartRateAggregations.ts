@@ -1,12 +1,12 @@
 import { isNil, mean, meanBy, round } from "lodash";
 
-import { StravaDataPoint } from "../../model/StravaDataPoint";
+import { ActivityDataPoint } from "../../model/ActivityDataPoint";
 
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
 import { DistanceFormat, getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
 
 export function averageHeartRate(
-    datums: Array<StravaDataPoint>,
+    datums: Array<ActivityDataPoint>,
     distanceFormat: DistanceFormat
 ) {
     const averageHeartRates: number[] = [];
@@ -32,6 +32,6 @@ export function averageHeartRate(
     return averageHeartRates;
 }
 
-export function averageHeartRateWholeRun(stravaDatums: Array<StravaDataPoint>): number {
+export function averageHeartRateWholeRun(stravaDatums: Array<ActivityDataPoint>): number {
     return round(meanBy(stravaDatums, "hr"));
 }

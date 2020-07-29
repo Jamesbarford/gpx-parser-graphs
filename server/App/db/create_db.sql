@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS "public"."activities" (
     "activity_id" VARCHAR(100) NOT NULL,
     "activity_date" VARCHAR(100) NOT NULL,
     "activity_type" VARCHAR(20) NOT NULL,
+    "activity_name" VARCHAR(100) NOT NULL,
     PRIMARY KEY ("user_id", "activity_id")
 );
 
@@ -23,6 +24,7 @@ CREATE TABLE IF NOT EXISTS "public"."activity_data" (
     "timestamp" TIMESTAMP NOT NULL,
     "lat" NUMERIC NOT NULL,
     "lon" NUMERIC NOT NULL,
-    PRIMARY KEY ("user_id", "activity_id")
+    "heart_rate" NUMERIC,
+    "cadence" NUMERIC
 );
 

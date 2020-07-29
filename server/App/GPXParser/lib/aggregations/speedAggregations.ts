@@ -1,6 +1,6 @@
 import { round } from "lodash";
 
-import { StravaDataPoint } from "../../model/StravaDataPoint";
+import { ActivityDataPoint } from "../../model/ActivityDataPoint";
 import { SpeedAndDistance } from "../../model/SpeedAndDistance";
 
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
@@ -9,7 +9,7 @@ import { getTotalTimeInMinutes } from "./timeAggregations";
 
 // this may not work
 export function getAverageSpeeds(
-    datums: Array<StravaDataPoint>,
+    datums: Array<ActivityDataPoint>,
     distanceFormat: DistanceFormat
 ): Array<SpeedAndDistance> {
     let distanceAccumulator = 0;
@@ -35,7 +35,7 @@ export function getAverageSpeeds(
 }
 
 export function getAllSpeedsForRun(
-    datums: Array<StravaDataPoint>,
+    datums: Array<ActivityDataPoint>,
     distanceFormat: DistanceFormat
 ): Array<SpeedAndDistance> {
     let distanceAcc = 0;
