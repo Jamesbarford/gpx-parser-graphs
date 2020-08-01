@@ -83,8 +83,8 @@ export class ActivitiesRepository implements IActivitiesRepository {
             this.db.raw(`
                 SELECT * from activities
                 WHERE user_id = '${userId}' AND
-                EXTRACT(MONTH FROM activity_date::timestamp) > ${month} AND 
-                EXTRACT(YEAR FROM activity_date::timestamp) >= ${year};
+                EXTRACT(MONTH FROM activity_date::timestamp) = ${month} AND 
+                EXTRACT(YEAR FROM activity_date::timestamp) = ${year};
             `);
         } catch (e) {
             throw new Error(`Failed to get activities for: ${month}/${year}: ${e}`);
