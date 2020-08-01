@@ -13,6 +13,7 @@ import { averageHeartRate, averageHeartRateWholeRun } from "./lib/aggregations/h
 import { getTotalTimeInMinutes } from "./lib/aggregations/timeAggregations";
 import { DistanceFormat } from "./lib/distanceCalulations/getDistanceFormat";
 import { SpeedAndDistance } from "./model/SpeedAndDistance";
+import { parseAsDateOrThrow } from "./lib/parsers/parsers";
 
 interface GPXasJSON {
     date: Date; // "2020-07-06T11:53:35.000Z"
@@ -67,7 +68,7 @@ export async function getGPXasJSON(xmlString: any, userId: string): Promise<GPXa
     const exerciseTime = getTotalTimeInMinutes(stravaDatums);
 
     const gpxAsJson: GPXasJSON = {
-        date: stravaRun.date,
+        date: parseAsDateOrThrow(stravaRun.date),
         runName: stravaRun.activityName,
         mins: formatTimeInMinutes(exerciseTime),
         avgHeartRateWholeRun: averageHeartRateWholeRun(stravaDatums),

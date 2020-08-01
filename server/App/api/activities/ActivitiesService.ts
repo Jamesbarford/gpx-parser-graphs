@@ -2,9 +2,9 @@ import { Activity } from "../../GPXParser/model/Activity";
 
 export interface IActivitiesRepository {
     insertActivity(activity: Activity, userId: string): Promise<any>;
-    getSingle(): Promise<any>;
-    getAll(): Promise<any>;
-    getCount(): Promise<any>;
+    getSingle(userId: string, activityDate: string): Promise<any>;
+    getAll(userId: string): Promise<any>;
+    getCount(userId: string, month: number): Promise<any>;
 }
 
 type InsertActivityRequest = {
@@ -23,7 +23,11 @@ export class ActivitiesService {
         }
     }
 
-    public async getSingle(req: any, res: any): Promise<any> {}
+    public async getSingle(req: any, res: any): Promise<any> {
+        let userId;
+        let activityDate;
+
+    }
 
     public async getAll(req: any, res: any): Promise<any> {}
 

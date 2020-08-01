@@ -1,4 +1,5 @@
 import Knex from "knex";
+
 import { IActivitiesRepository } from "./ActivitiesService";
 import { Activity } from "../../GPXParser/model/Activity";
 import { ActivityDataPoint } from "../../GPXParser/model/ActivityDataPoint";
@@ -12,8 +13,8 @@ export class ActivitiesRepository implements IActivitiesRepository {
         try {
             await this.db.raw(
                 `
-                INSERT INTO activities(user_id, activity_id, activity_date, activity_type, activity_name) 
-                VALUES ('${userId}', '${activity.date}', '${activity.date}', 'run', '${activity.activityName}');
+                INSERT INTO activities(user_id, activity_date, activity_type, activity_name) 
+                VALUES ('${userId}', '${activity.date}', 'run', '${activity.activityName}');
             `
             );
             await this.insertActivityData(activity.datum);
@@ -28,7 +29,7 @@ export class ActivitiesRepository implements IActivitiesRepository {
 
             await this.db.raw(
                 `
-                INSERT INTO activity_data(user_id, activity_id, activity_date, activity_type, speed, distance, timestamp, lat, lon, heart_rate, cadence)
+                INSERT INTO activity_data(user_id, activity_date, activity_type, timestamp, lat, lon, heart_rate, cadence) 
                 VALUES ${insertStatements};
                 `
             );
@@ -38,18 +39,55 @@ export class ActivitiesRepository implements IActivitiesRepository {
     }
 
     private toInsertStatement(activityDataPoint: ActivityDataPoint): string {
-        return `('${activityDataPoint.user_id}', '${
-            activityDataPoint.activity_id
-        }', '${activityDataPoint.activity_date.toISOString()}', 'run', '${0}', '${0}', '${activityDataPoint.timeStamp.toISOString()}', '${
-            activityDataPoint.lat
-        }', '${activityDataPoint.lon}', '${activityDataPoint.hr || null}', ${
+        return `('${activityDataPoint.user_id}', '${activityDataPoint.activity_date}', 'run', '${
+            activityDataPoint.timeStamp
+        }', '${activityDataPoint.lat}', '${activityDataPoint.lon}', '${activityDataPoint.hr || null}', ${
             activityDataPoint.cad || null
         })`;
     }
 
-    public async getSingle() {}
+    public async getSingle(userId: string, activityDate: string) {
+        try {
+            await this.db.raw(`
+                SELECT * FROM activity_data
+                WHERE activity_date = '${activityDate}'
+                AND user_id = '${userId}'
+                ORDER BY timestamp;
+            `);
+        } catch (e) {
+            throw new Error(`Failed to get activity for date: ${activityDate}: ${e}`);
+        }
+    }
 
-    public async getAll() {}
+    public async getAll(userId: string) {
+        try {
+            this.db.raw(`SELECT * FROM activities WHERE user_id = '${userId}'`);
+        } catch (e) {
+            throw new Error(`Failed to get activities for user: ${e}`);
+        }
+    }
 
-    public async getCount() {}
+    public async getCount(userId: string, month: number) {
+        try {
+            this.db.raw(`
+                SELECT COUNT(*) from activities
+                WHERE user_id = 'user_id';
+            `);
+        } catch (e) {
+            throw new Error(`Failed to get activity for user: ${e}`);
+        }
+    }
+
+    public async getActivitiesForMonth(userId: string, month: number, year: number) {
+        try {
+            this.db.raw(`
+                SELECT * from activities
+                WHERE user_id = '${userId}' AND
+                EXTRACT(MONTH FROM activity_date::timestamp) > ${month} AND 
+                EXTRACT(YEAR FROM activity_date::timestamp) >= ${year};
+            `);
+        } catch (e) {
+            throw new Error(`Failed to get activities for: ${month}/${year}: ${e}`);
+        }
+    }
 }

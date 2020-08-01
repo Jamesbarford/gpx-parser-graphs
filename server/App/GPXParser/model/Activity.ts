@@ -6,7 +6,7 @@ import { parseAsDateOrThrow } from "../lib/parsers/parsers";
 
 export class Activity {
     public constructor(
-        public readonly date: Date,
+        public readonly date: string,
         public readonly activityName: string,
         public readonly datum: Array<ActivityDataPoint>
     ) {}
@@ -14,11 +14,7 @@ export class Activity {
     public static create(parsedXml: any, userId: string) {
         const datums = parsedXmlToActivityDataPoints(parsedXml, userId);
 
-        return new Activity(
-            getRunDate(parsedXml),
-            getRunName(parsedXml),
-            datums.sort((a, b) => a.timeStamp.getTime() - b.timeStamp.getTime())
-        );
+        return new Activity(getRunDate(parsedXml).toISOString(), getRunName(parsedXml), datums);
     }
 }
 
@@ -43,8 +39,7 @@ function parsedXmlToActivityDataPoints(parsedXml: any, userId: string): Array<Ac
                     d?.[distanceKey]?.lat,
                     d?.[distanceKey]?.lon,
                     d?.time?.[0],
-                    date,
-                    date,
+                    date.toISOString(),
                     userId,
                     d?.extensions?.[0]?.[extensionKey]?.[0]?.[heartRateKey]?.[0],
                     d?.extensions?.[0]?.[extensionKey]?.[0]?.[cadenceKey]?.[0]
