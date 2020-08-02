@@ -1,6 +1,6 @@
 import { parseISO } from "date-fns";
 
-import { Activity, ActivityDetails, ActivityWithDetails } from "./types";
+import { Activity, ActivityDetails } from "./types";
 import { objectHasAllKeys } from "../../../lib/util";
 
 export function toActivities(apiResponse: any): Array<Activity> {
@@ -27,18 +27,6 @@ export function toActivity(apiResponse: any): Activity {
         date: parseISO(apiResponse.activity_date),
         name: apiResponse.activity_name,
         type: apiResponse.activity_type
-    };
-}
-
-export function toActivityWithDetails(
-    activity: Activity,
-    activityDetails: Array<ActivityDetails>
-): ActivityWithDetails {
-    return {
-        name: activity.name,
-        date: activity.date,
-        type: activity.type,
-        details: activityDetails
     };
 }
 

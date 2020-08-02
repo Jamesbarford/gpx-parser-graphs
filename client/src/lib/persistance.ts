@@ -6,22 +6,17 @@ export const enum RequestStates {
 }
 
 export interface RequestState {
-    state: RequestStates
+    state: RequestStates;
     error?: string;
 }
-
 
 export class RequestError implements RequestState {
     public state: RequestStates = RequestStates.Error;
 
-    public constructor(public readonly error: string, public readonly code: number) {
-    }
+    public constructor(public readonly error: string, public readonly code: number) {}
 
     public static create(error?: string, code?: number) {
-        return new RequestError(
-            error || "Server error: failed to make request",
-            code || 500
-        );
+        return new RequestError(error || "Server error: failed to make request", code || 500);
     }
 
     public static is(s: RequestState): s is RequestError {
@@ -52,4 +47,3 @@ export class Success implements RequestState {
         return s instanceof Success;
     }
 }
-

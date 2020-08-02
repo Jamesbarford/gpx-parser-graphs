@@ -29,7 +29,7 @@ export function getAllActivitiesThunk() {
         let activities: Array<Activity>;
         try {
             const response = await getAllActivitiesReq(userId);
-            activities = toActivities(response);
+            activities = toActivities(response.data);
         } catch (e) {
             dispatch(new FetchAllActivitiesFailure(RequestError.create(e)));
             return;
@@ -48,7 +48,7 @@ export function getActivitiesForMonthThunk(month: number, year: number) {
         let activities: Array<Activity>;
         try {
             const response = await getActivitiesForMonthReq(userId, month, year);
-            activities = toActivities(response);
+            activities = toActivities(response.data);
         } catch (e) {
             dispatch(new FetchActivitiesForMonthFailure(RequestError.create(e)));
             return;
@@ -67,7 +67,7 @@ export function getActivityDetailsThunk(isoDate: string) {
         let activityDetails: Array<ActivityDetails>;
         try {
             const response = await getActivityDetailsReq(userId, isoDate);
-            activityDetails = toActivityDetails(response);
+            activityDetails = toActivityDetails(response.data);
         } catch (e) {
             dispatch(new FetchActivityDetailsFailure(isoDate, RequestError.create(e)));
             return;

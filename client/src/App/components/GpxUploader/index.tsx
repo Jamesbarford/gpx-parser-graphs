@@ -1,6 +1,8 @@
 import * as React from "react";
 import { isNil } from "lodash";
 import { connect } from "react-redux";
+import { Button, Modal } from "@material-ui/core";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
 import { DispatchThunk } from "../../../store/store";
 import { uploadGPXThunk } from "./thunks";
@@ -10,12 +12,13 @@ interface GpxUploadState {
 }
 
 interface MapDispatchToProps {
-    uploadFile(file: File): void
+    uploadFile(file: File): void;
 }
 
 type GpxUploadProps = MapDispatchToProps;
 
 class GpxUpload extends React.Component<GpxUploadProps, GpxUploadState> {
+    private uploadId = "gpx-upload";
     public state: GpxUploadState = {
         file: undefined
     };
@@ -33,19 +36,37 @@ class GpxUpload extends React.Component<GpxUploadProps, GpxUploadState> {
 
     public render(): JSX.Element {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <input onChange={this.handleFileChange} type="file"/>
-                <button>submit</button>
-            </form>
+            <Modal open={false}>
+                <form onSubmit={this.handleSubmit}>
+                    <label id={this.uploadId}>
+                        <input
+                            id={this.uploadId}
+                            style={{ display: "none" }}
+                            onChange={this.handleFileChange}
+                            type="file"
+                        />
+                        <Button disableElevation={true} variant="contained" component="span">
+                            Select a file
+                        </Button>
+                    </label>
+                    <Button
+                        disabled={isNil(this.state.file)}
+                        variant="contained"
+                        disableElevation={true}
+                        type="submit"
+                        color="primary"
+                        startIcon={<CloudUploadIcon />}
+                    >
+                        submit
+                    </Button>
+                </form>
+            </Modal>
         );
     }
 }
 
-export const GpxUploadConnected = connect<null, MapDispatchToProps>(
-    null,
-    (dispatch: DispatchThunk) => ({
-        uploadFile(file) {
-            dispatch(uploadGPXThunk(file));
-        }
-    })
-)(GpxUpload);
+export const GpxUploadConnected = connect<null, MapDispatchToProps>(null, (dispatch: DispatchThunk) => ({
+    uploadFile(file) {
+        dispatch(uploadGPXThunk(file));
+    }
+}))(GpxUpload);
