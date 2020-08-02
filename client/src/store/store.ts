@@ -3,14 +3,16 @@ import { createStore, combineReducers, AnyAction, applyMiddleware, compose, Stor
 import { createLogger } from "redux-logger";
 import { isPlainObject, isFunction } from "lodash";
 import { uploadGpxReducer, UploadGpxState } from "../App/components/GpxUploader/reducer";
-import { runningDataReducer, RunningDataState } from "./data/runningData/reducer";
+import { activitiesReducer, ActivitiesState } from "./data/activities/reducer";
+import { authReducer, AuthState } from "./auth/reducer";
 
 
 export type DispatchThunk<E = any> = ThunkDispatch<E, AppState, Action>;
 
 export interface AppState {
+    auth: AuthState;
     uploadGpxState: UploadGpxState;
-    runningDataState: RunningDataState
+    runningDataState: ActivitiesState;
 }
 
 const middleware = applyMiddleware(
@@ -35,8 +37,9 @@ function stripClassActions<State, Action>(_: Store<State>) {
 
 
 const reducers = combineReducers<AppState, AnyAction>({
+    auth: authReducer,
     uploadGpxState: uploadGpxReducer,
-    runningDataState: runningDataReducer
+    runningDataState: activitiesReducer
 });
 
 const enhancers = compose(

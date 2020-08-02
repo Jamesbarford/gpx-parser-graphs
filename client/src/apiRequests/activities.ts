@@ -12,6 +12,6 @@ export async function getActivityDetailsReq(userId: string, date: string): Promi
     return getRequest(`/activities/userId/${userId}/date/${date}`);
 }
 
-export async function getAllActivities(userId: string): Promise<any> {
+export async function getAllActivitiesReq(userId: string): Promise<any> {
     return getRequest(`/activities/${userId}`);
 }
