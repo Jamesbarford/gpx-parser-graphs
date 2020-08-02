@@ -3,7 +3,7 @@ export const enum HttpReqMethod {
     POST = "POST",
     PUT = "PUT",
     DELETE = "DELETE",
-    PATCH = "PATCH",
+    PATCH = "PATCH"
 }
 
 type RequestOptions = {
@@ -48,11 +48,7 @@ export class MakeXMLRequest {
                 }
             };
 
-            this._xhr.open(
-                this.requestOptions.httpReqMethod,
-                "/api" + this.requestOptions.url,
-                true
-            );
+            this._xhr.open(this.requestOptions.httpReqMethod, "/api" + this.requestOptions.url, true);
             this._xhr.onerror = () => reject(new Error("Failed to make request"));
             this._setHeaders();
 
@@ -87,6 +83,14 @@ export class CancelableRequest {
     public constructor(
         public readonly makeRequest: () => Promise<any>,
         public readonly abort: () => void
-    ) {
-    }
+    ) {}
+}
+
+export async function getRequest(url: string) {
+    const setup = MakeXMLRequest.setupRequest({
+        url,
+        httpReqMethod: HttpReqMethod.GET
+    });
+
+    return setup.makeRequest();
 }

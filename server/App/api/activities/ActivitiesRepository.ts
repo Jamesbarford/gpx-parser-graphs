@@ -46,33 +46,37 @@ export class ActivitiesRepository implements IActivitiesRepository {
         })`;
     }
 
-    public async getSingle(userId: string, activityDate: string) {
+    public async getSingle(userId: string, activityDate: string): Promise<any> {
         try {
-            await this.db.raw(`
+            const dbResponse = await this.db.raw(`
                 SELECT * FROM activity_data
                 WHERE activity_date = '${activityDate}'
                 AND user_id = '${userId}'
                 ORDER BY timestamp;
             `);
+            return dbResponse.rows[0];
         } catch (e) {
             throw new Error(`Failed to get activity for date: ${activityDate}: ${e}`);
         }
     }
 
-    public async getAll(userId: string) {
+    public async getAll(userId: string): Promise<any[]> {
         try {
-            this.db.raw(`SELECT * FROM activities WHERE user_id = '${userId}'`);
+            const dbResponse = await this.db.raw(`SELECT * FROM activities WHERE user_id = '${userId}'`);
+            return dbResponse.rows;
         } catch (e) {
             throw new Error(`Failed to get activities for user: ${e}`);
         }
     }
 
-    public async getCount(userId: string, month: number) {
+    public async getCount(userId: string): Promise<number> {
         try {
-            this.db.raw(`
+            const dbResponse = await this.db.raw(`
                 SELECT COUNT(*) from activities
-                WHERE user_id = 'user_id';
+                WHERE user_id = '${userId}';
             `);
+
+            return dbResponse.rows[0].count;
         } catch (e) {
             throw new Error(`Failed to get activity for user: ${e}`);
         }
@@ -80,12 +84,14 @@ export class ActivitiesRepository implements IActivitiesRepository {
 
     public async getActivitiesForMonth(userId: string, month: number, year: number) {
         try {
-            this.db.raw(`
+            const dbResponse = await this.db.raw(`
                 SELECT * from activities
                 WHERE user_id = '${userId}' AND
                 EXTRACT(MONTH FROM activity_date::timestamp) = ${month} AND 
                 EXTRACT(YEAR FROM activity_date::timestamp) = ${year};
             `);
+
+            return dbResponse.rows;
         } catch (e) {
             throw new Error(`Failed to get activities for: ${month}/${year}: ${e}`);
         }

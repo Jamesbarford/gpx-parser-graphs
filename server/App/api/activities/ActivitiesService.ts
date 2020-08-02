@@ -4,7 +4,8 @@ export interface IActivitiesRepository {
     insertActivity(activity: Activity, userId: string): Promise<any>;
     getSingle(userId: string, activityDate: string): Promise<any>;
     getAll(userId: string): Promise<any>;
-    getCount(userId: string, month: number): Promise<any>;
+    getCount(userId: string): Promise<any>;
+    getActivitiesForMonth(userId: string, month: number, year: number): Promise<any>;
 }
 
 type InsertActivityRequest = {
@@ -15,21 +16,48 @@ type InsertActivityRequest = {
 export class ActivitiesService {
     public constructor(private readonly activitiesRepository: IActivitiesRepository) {}
 
-    public async insertActivity(req: InsertActivityRequest, res: any): Promise<any> {
+    public async insertActivity(req: InsertActivityRequest): Promise<any> {
         try {
-            await this.activitiesRepository.insertActivity(req.activity, req.userId);
+            return await this.activitiesRepository.insertActivity(req.activity, req.userId);
         } catch (e) {
             throw e;
         }
     }
 
-    public async getSingle(req: any, res: any): Promise<any> {
-        let userId;
-        let activityDate;
-
+    public async getSingle(req: { userId: string; date: string }): Promise<any> {
+        try {
+            return await this.activitiesRepository.getSingle(req.userId, req.date);
+        } catch (e) {
+            throw e;
+        }
     }
 
-    public async getAll(req: any, res: any): Promise<any> {}
+    public async getAll(req: { userId: string }): Promise<any> {
+        try {
+            return await this.activitiesRepository.getAll(req.userId);
+        } catch (e) {
+            throw e;
+        }
+    }
 
-    public async getCount(req: any, res: any): Promise<any> {}
+    public async getCount(req: { userId: string }): Promise<any> {
+        try {
+            console.log(req);
+            return await this.activitiesRepository.getCount(req.userId);
+        } catch (e) {
+            throw e;
+        }
+    }
+
+    public async getActivitiesForMonth(req: {
+        userId: string;
+        month: number;
+        year: number;
+    }): Promise<any> {
+        try {
+            return await this.activitiesRepository.getActivitiesForMonth(req.userId, req.month, req.year);
+        } catch (e) {
+            throw e;
+        }
+    }
 }
