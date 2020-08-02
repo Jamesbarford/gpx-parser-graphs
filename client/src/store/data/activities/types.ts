@@ -14,6 +14,8 @@ export interface ActivityWithDetails extends ActivityWithRequestState {
     details?: ActivityDetails[];
 }
 
+export type ActivityDictionary = Record<string, ActivityWithDetails>;
+
 export interface ActivityDetails {
     timestamp: Date;
     lat: number;

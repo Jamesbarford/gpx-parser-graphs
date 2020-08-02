@@ -14,6 +14,7 @@
   "author": "James Barford-Evans",
   "license": "ISC",
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "d3": "^5.16.0",
     "date-fns": "^2.15.0",
     "lodash": "^4.17.19",
@@ -33,6 +34,7 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@material-ui/types": "^5.1.0",
     "@types/d3": "^5.7.2",
     "@types/enzyme": "^3.10.5",
     "@types/enzyme-adapter-react-16": "^1.0.6",

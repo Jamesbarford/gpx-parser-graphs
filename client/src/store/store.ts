@@ -12,7 +12,7 @@ export type DispatchThunk<E = any> = ThunkDispatch<E, AppState, Action>;
 export interface AppState {
     auth: AuthState;
     uploadGpxState: UploadGpxState;
-    runningDataState: ActivitiesState;
+    activities: ActivitiesState;
 }
 
 const middleware = applyMiddleware(
@@ -39,7 +39,7 @@ function stripClassActions<State, Action>(_: Store<State>) {
 const reducers = combineReducers<AppState, AnyAction>({
     auth: authReducer,
     uploadGpxState: uploadGpxReducer,
-    runningDataState: activitiesReducer
+    activities: activitiesReducer
 });
 
 const enhancers = compose(

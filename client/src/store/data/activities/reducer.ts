@@ -1,13 +1,13 @@
-import { keyBy, union } from "lodash";
+import { union } from "lodash";
 
 import { DistanceFormat } from "../../models/DistanceFormat";
-import { Activity, ActivityWithDetails } from "./types";
+import { Activity, ActivityDictionary } from "./types";
 import { Initial, Loading, RequestState, Success } from "../../../lib/persistance";
 import { ActivitiesActionTypes, ActivityActions } from "./actions";
 
 export interface ActivitiesState {
     ids: Array<string>;
-    byId: Record<string, ActivityWithDetails>;
+    byId: ActivityDictionary;
     allActivitiesRequestState: RequestState;
     distanceFormat: DistanceFormat;
 }
@@ -103,9 +103,13 @@ function updateIds(state: ActivitiesState, activities: Array<Activity>) {
 }
 
 function updateDictionary(state: ActivitiesState, activities: Array<Activity>) {
-    return Object.assign(
-        {},
-        state.byId,
-        keyBy(activities, activity => activity.date.toISOString())
-    );
+    const newActivities = activities.reduce((dict: ActivityDictionary, activity) => {
+        dict[activity.date.toISOString()] = {
+            ...activity,
+            requestState: new Success()
+        };
+        return dict;
+    }, {});
+
+    return Object.assign({}, state.byId, newActivities);
 }
