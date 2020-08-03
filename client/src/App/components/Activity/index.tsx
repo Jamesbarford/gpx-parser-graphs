@@ -1,6 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { ListItem } from "@material-ui/core";
+import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 import { ActivityIcon } from "../ActivityIcon";
 import { AppState } from "../../../store/store";
@@ -23,17 +24,25 @@ interface MapStateToProps {
 type ActivityComponentProps = OwnProps & MapStateToProps;
 
 const ActivityComponent: React.FC<ActivityComponentProps> = props => (
-    <ListItem>
-        <span>Name: {props.name}</span>
-        <span>Date: {props.dateFormatted}</span>
-        <span>
-            Type: <ActivityIcon activityType={props.activityType} />
-        </span>
+    <ListItem
+        button={true}
+        disableRipple={true}
+        dense={true}
+        alignItems="center"
+        component={Link}
+        to={`/activity/${props.activityISODate}`}
+    >
+        <ListItemIcon>
+            <ActivityIcon activityType={props.activityType} />
+        </ListItemIcon>
+        <ListItemText primary={`Name: ${props.name}`} secondary={`Date: ${props.dateFormatted}`} />
     </ListItem>
 );
 
-export const ActivityConnected = connect((state: AppState, ownProps: OwnProps) => ({
-    name: getActivityNameFromISODateOwnProp(state, ownProps),
-    dateFormatted: getActivityDateFormattedFromISODateOwnProp(state, ownProps),
-    activityType: getActivityTypeFromISODateOwnProp(state, ownProps)
-}))(ActivityComponent);
+export const ActivityConnected = connect<MapStateToProps, null, OwnProps>(
+    (state: AppState, ownProps: OwnProps) => ({
+        name: getActivityNameFromISODateOwnProp(state, ownProps),
+        dateFormatted: getActivityDateFormattedFromISODateOwnProp(state, ownProps),
+        activityType: getActivityTypeFromISODateOwnProp(state, ownProps)
+    })
+)(ActivityComponent);

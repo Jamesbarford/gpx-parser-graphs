@@ -52,13 +52,13 @@ export class Overview extends React.Component<OverviewProps> {
             case RequestStates.Loading:
                 return (
                     <>
-                        <Skeleton animation="wave" />
-                        <Skeleton animation="wave" />
-                        <Skeleton animation="wave" />
-                        <Skeleton animation="wave" />
-                        <Skeleton animation="wave" />
-                        <Skeleton animation="wave" />
-                        <Skeleton animation="wave" />
+                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
                     </>
                 );
 

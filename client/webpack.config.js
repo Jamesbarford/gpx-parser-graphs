@@ -39,6 +39,7 @@ const WebpackConfig = {
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),
+        publicPath: '/',
         pathinfo: !development
     },
     plugins,
@@ -110,6 +111,7 @@ const WebpackConfig = {
         contentBase: "./dist",
         compress: true,
         port: 5000,
+        historyApiFallback: true,
         proxy: {
             "/api": {
                 target: "http://localhost:3000",

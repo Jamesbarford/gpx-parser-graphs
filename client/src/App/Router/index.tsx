@@ -53,7 +53,13 @@ export class AppRouter extends React.Component<{}, RouterState> {
 
                 <div>
                     <Switch>
-                        <Route path="/"><OverviewConnected /></Route>
+                        <Route exact path="/">
+                            <OverviewConnected />
+                        </Route>
+                        <Route path="/activity/:id" children={() => <span>Activity details</span>} />
+                        <Route exact path="/activity">
+                            <span>Activity?</span>
+                        </Route>
                     </Switch>
                 </div>
             </Router>
