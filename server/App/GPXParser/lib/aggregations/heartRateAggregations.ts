@@ -4,7 +4,7 @@ import { ActivityDataPoint } from "../../model/ActivityDataPoint";
 
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
 import { DistanceFormat, getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
-import { ActivityDetails } from "./types";
+import { ActivityDetails } from "../../model/ActivityDetails";
 
 export function averageHeartRate(
     datums: Array<ActivityDetails>,

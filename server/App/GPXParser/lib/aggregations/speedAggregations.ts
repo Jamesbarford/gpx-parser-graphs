@@ -5,7 +5,7 @@ import { SpeedAndDistance } from "../../model/SpeedAndDistance";
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
 import { DistanceFormat, getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
 import { getTotalTimeInMinutes } from "./timeAggregations";
-import { ActivityDetails } from "./types";
+import { ActivityDetails } from "../../model/ActivityDetails";
 
 // this may not work
 export function getAverageSpeeds(

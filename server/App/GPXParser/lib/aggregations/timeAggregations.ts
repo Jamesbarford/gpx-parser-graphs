@@ -1,7 +1,7 @@
 import { differenceInSeconds } from "date-fns";
 
 import { parseAsDateOrThrow } from "../parsers/parsers";
-import { ActivityDetails } from "./types";
+import { ActivityDetails } from "../../model/ActivityDetails";
 
 export function getTotalTimeInMinutes(datums: Array<ActivityDetails>) {
     const first = datums[0];

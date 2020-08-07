@@ -1,6 +1,6 @@
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
 import { DistanceFormat, getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
-import { ActivityDetails } from "./types";
+import { ActivityDetails } from "../../model/ActivityDetails";
 
 export function getTotalDistance(datums: Array<ActivityDetails>, distanceFormat: DistanceFormat): number {
     return datums.reduce((totalDistance, datum, i) => {

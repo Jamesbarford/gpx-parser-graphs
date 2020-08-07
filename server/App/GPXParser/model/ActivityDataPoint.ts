@@ -1,7 +1,7 @@
 import { isNil } from "lodash";
 
 import { parseAsDateOrThrow, parseAsNumberOrThrow } from "../lib/parsers/parsers";
-import { ActivityDetails } from "../lib/aggregations/types";
+import { ActivityDetails } from "./ActivityDetails";
 
 export class ActivityDataPoint implements ActivityDetails {
     private constructor(

@@ -3,14 +3,15 @@ import Knex from "knex";
 import { IActivitiesRepository } from "./ActivitiesService";
 import { ActivityWithData } from "../../GPXParser/model/ActivityWithData";
 import { ActivityDataPoint } from "../../GPXParser/model/ActivityDataPoint";
-import { ActivityDetails } from "../../GPXParser/lib/aggregations/types";
+import { ActivityDetails } from "../../GPXParser/model/ActivityDetails";
+import { Activity } from "../../GPXParser/model/Activity";
 
 export class ActivitiesRepository implements IActivitiesRepository {
     public constructor(private db: Knex<any, any>) {
         this.toInsertStatement = this.toInsertStatement.bind(this);
     }
 
-    public async insertActivity(activity: ActivityWithData, userId: string) {
+    public async insertActivity(activity: ActivityWithData, userId: string): Promise<void> {
         try {
             await this.db.raw(
                 `
@@ -24,7 +25,7 @@ export class ActivitiesRepository implements IActivitiesRepository {
         }
     }
 
-    private async insertActivityData(activityDataPoints: Array<ActivityDataPoint>): Promise<any> {
+    private async insertActivityData(activityDataPoints: Array<ActivityDataPoint>): Promise<void> {
         try {
             const insertStatements: string = activityDataPoints.map(this.toInsertStatement).join(",");
 
@@ -47,7 +48,7 @@ export class ActivitiesRepository implements IActivitiesRepository {
         })`;
     }
 
-    public async getSingle(userId: string, activityDate: string): Promise<ActivityDetails> {
+    public async getSingle(userId: string, activityDate: string): Promise<ActivityDetails[]> {
         try {
             const dbResponse = await this.db.raw(`
                 SELECT timestamp, lat, lon, heart_rate, cadence FROM activity_data
@@ -61,7 +62,7 @@ export class ActivitiesRepository implements IActivitiesRepository {
         }
     }
 
-    public async getAll(userId: string): Promise<any[]> {
+    public async getAll(userId: string): Promise<Activity[]> {
         try {
             const dbResponse = await this.db.raw(`SELECT * FROM activities WHERE user_id = '${userId}'`);
             return dbResponse.rows;
@@ -83,7 +84,7 @@ export class ActivitiesRepository implements IActivitiesRepository {
         }
     }
 
-    public async getActivitiesForMonth(userId: string, month: number, year: number): Promise<any> {
+    public async getActivitiesForMonth(userId: string, month: number, year: number): Promise<Activity[]> {
         try {
             const dbResponse = await this.db.raw(`
                 SELECT * from activities
