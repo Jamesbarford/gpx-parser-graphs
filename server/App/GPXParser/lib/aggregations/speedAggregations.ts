@@ -6,10 +6,11 @@ import { SpeedAndDistance } from "../../model/SpeedAndDistance";
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
 import { DistanceFormat, getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
 import { getTotalTimeInMinutes } from "./timeAggregations";
+import { ActivityDetails } from "./types";
 
 // this may not work
 export function getAverageSpeeds(
-    datums: Array<ActivityDataPoint>,
+    datums: Array<ActivityDetails>,
     distanceFormat: DistanceFormat
 ): Array<SpeedAndDistance> {
     let distanceAccumulator = 0;
@@ -35,7 +36,7 @@ export function getAverageSpeeds(
 }
 
 export function getAllSpeedsForRun(
-    datums: Array<ActivityDataPoint>,
+    datums: Array<ActivityDetails>,
     distanceFormat: DistanceFormat
 ): Array<SpeedAndDistance> {
     let distanceAcc = 0;
@@ -47,7 +48,13 @@ export function getAllSpeedsForRun(
             const distance = getDistanceFormat(distanceFormat, distanceBetween);
             const time = getTotalTimeInMinutes([datum, nextDatum]);
 
-            acc.push(new SpeedAndDistance(time / distance, distanceAcc += distance, DistanceFormat.KILOMETERS));
+            acc.push(
+                new SpeedAndDistance(
+                    time / distance,
+                    (distanceAcc += distance),
+                    DistanceFormat.KILOMETERS
+                )
+            );
         }
         return acc;
     }, []);

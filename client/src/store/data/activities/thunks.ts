@@ -67,6 +67,7 @@ export function getActivityDetailsThunk(isoDate: string) {
         let activityDetails: Array<ActivityDetails>;
         try {
             const response = await getActivityDetailsReq(userId, isoDate);
+            console.log(response)
             activityDetails = toActivityDetails(response.data);
         } catch (e) {
             dispatch(new FetchActivityDetailsFailure(isoDate, RequestError.create(e)));

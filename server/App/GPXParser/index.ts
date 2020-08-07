@@ -4,22 +4,22 @@ import { isNil, round } from "lodash";
 import { Activity } from "./model/Activity";
 
 import { formatTimeInMinutes } from "./lib/formatters/timeFormatters";
-import {
-    getAllSpeedsForRun,
-    getAverageSpeeds
-} from "./lib/aggregations/speedAggregations";
+import { getAllSpeedsForRun, getAverageSpeeds } from "./lib/aggregations/speedAggregations";
 import { getTotalDistance } from "./lib/aggregations/distanceAggregations";
 import { averageHeartRate, averageHeartRateWholeRun } from "./lib/aggregations/heartRateAggregations";
 import { getTotalTimeInMinutes } from "./lib/aggregations/timeAggregations";
 import { DistanceFormat } from "./lib/distanceCalulations/getDistanceFormat";
 import { SpeedAndDistance } from "./model/SpeedAndDistance";
 import { parseAsDateOrThrow } from "./lib/parsers/parsers";
+import { ActivityDataPoint } from "./model/ActivityDataPoint";
+import { ActivityWithDetails } from "../../../client/src/store/data/activities/types";
+import { ActivityDetails } from "./lib/aggregations/types";
 
 interface GPXasJSON {
     date: Date; // "2020-07-06T11:53:35.000Z"
-    runName: string
+    runName: string;
     mins: string;
-    avgHeartRateWholeRun: number | undefined
+    avgHeartRateWholeRun: number | undefined;
     distanceMiles: number;
     distanceKm: number;
     avgSpeedMile: string; // mins per mile, formatted e.g 6:43
@@ -28,7 +28,7 @@ interface GPXasJSON {
     avgKmSpeedArr: Array<SpeedAndDistance>; // e.g 3 km = length 3.
     avgHeartRateMiles: Array<number>;
     avgHeartRateKm: Array<number>;
-    allSpeedsInKm: Array<SpeedAndDistance> // break down for the whole run between each GPS point. (huge)
+    allSpeedsInKm: Array<SpeedAndDistance>; // break down for the whole run between each GPS point. (huge)
 }
 
 export async function getActivity(xmlString: any, userId: string): Promise<Activity> {
@@ -62,7 +62,7 @@ export async function getGPXasJSON(xmlString: any, userId: string): Promise<GPXa
         throw new Error(`Failed to parse file: ${e}`);
     }
 
-    const stravaDatums = stravaRun.datum;
+    const stravaDatums = toActivityDetails(stravaRun.datum);
     const distanceKm = round(getTotalDistance(stravaDatums, DistanceFormat.KILOMETERS), 2);
     const distanceMiles = round(getTotalDistance(stravaDatums, DistanceFormat.MILES), 2);
     const exerciseTime = getTotalTimeInMinutes(stravaDatums);
@@ -89,4 +89,14 @@ export async function getGPXasJSON(xmlString: any, userId: string): Promise<GPXa
     };
 
     return gpxAsJson;
+}
+
+function toActivityDetails(datums: Array<ActivityDataPoint>): Array<ActivityDetails> {
+    return datums.map(d => ({
+        timestamp: d.timeStamp,
+        lat: d.lat,
+        lon: d.lon,
+        heart_rate: d.hr,
+        cadence: d.cad
+    }));
 }

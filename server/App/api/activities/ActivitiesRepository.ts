@@ -49,12 +49,12 @@ export class ActivitiesRepository implements IActivitiesRepository {
     public async getSingle(userId: string, activityDate: string): Promise<any> {
         try {
             const dbResponse = await this.db.raw(`
-                SELECT * FROM activity_data
+                SELECT timestamp, lat, lon, heart_rate, cadence FROM activity_data
                 WHERE activity_date = '${activityDate}'
                 AND user_id = '${userId}'
                 ORDER BY timestamp;
             `);
-            return dbResponse.rows[0];
+            return dbResponse.rows;
         } catch (e) {
             throw new Error(`Failed to get activity for date: ${activityDate}: ${e}`);
         }

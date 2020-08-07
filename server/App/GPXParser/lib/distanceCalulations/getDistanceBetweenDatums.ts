@@ -1,6 +1,6 @@
-import { ActivityDataPoint } from "../../model/ActivityDataPoint";
+import { ActivityDetails } from "../aggregations/types";
 
-export function getDistanceBetweenDatums(datumOne: ActivityDataPoint, datumTwo: ActivityDataPoint): number {
+export function getDistanceBetweenDatums(datumOne: ActivityDetails, datumTwo: ActivityDetails): number {
     return getDistanceFromLatLonInKm(datumOne.lat, datumOne.lon, datumTwo.lat, datumTwo.lon);
 }
 

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { AppBar, Tab, Tabs } from "@material-ui/core";
 
 import { OverviewConnected } from "../Overview";
+import { isNil } from "lodash";
+import { AnalysisConnected } from "../Analysis";
 
 function a11yProps(index: number) {
     return {
@@ -56,7 +58,14 @@ export class AppRouter extends React.Component<{}, RouterState> {
                         <Route exact path="/">
                             <OverviewConnected />
                         </Route>
-                        <Route path="/activity/:id" children={() => <span>Activity details</span>} />
+                        <Route
+                            path="/activity/:id"
+                            children={p => {
+                                const isoDate = p.match?.params?.id;
+                                if (isNil(isoDate)) return <span>No activity found</span>;
+                                return <AnalysisConnected isoDate={isoDate} />;
+                            }}
+                        />
                         <Route exact path="/activity">
                             <span>Activity?</span>
                         </Route>
