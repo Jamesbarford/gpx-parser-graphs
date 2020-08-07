@@ -1,15 +1,16 @@
 import Knex from "knex";
 
 import { IActivitiesRepository } from "./ActivitiesService";
-import { Activity } from "../../GPXParser/model/Activity";
+import { ActivityWithData } from "../../GPXParser/model/ActivityWithData";
 import { ActivityDataPoint } from "../../GPXParser/model/ActivityDataPoint";
+import { ActivityDetails } from "../../GPXParser/lib/aggregations/types";
 
 export class ActivitiesRepository implements IActivitiesRepository {
     public constructor(private db: Knex<any, any>) {
         this.toInsertStatement = this.toInsertStatement.bind(this);
     }
 
-    public async insertActivity(activity: Activity, userId: string) {
+    public async insertActivity(activity: ActivityWithData, userId: string) {
         try {
             await this.db.raw(
                 `
@@ -40,13 +41,13 @@ export class ActivitiesRepository implements IActivitiesRepository {
 
     private toInsertStatement(activityDataPoint: ActivityDataPoint): string {
         return `('${activityDataPoint.user_id}', '${activityDataPoint.activity_date}', 'run', '${
-            activityDataPoint.timeStamp
+            activityDataPoint.timestamp
         }', '${activityDataPoint.lat}', '${activityDataPoint.lon}', '${activityDataPoint.hr || null}', ${
             activityDataPoint.cad || null
         })`;
     }
 
-    public async getSingle(userId: string, activityDate: string): Promise<any> {
+    public async getSingle(userId: string, activityDate: string): Promise<ActivityDetails> {
         try {
             const dbResponse = await this.db.raw(`
                 SELECT timestamp, lat, lon, heart_rate, cadence FROM activity_data
@@ -82,7 +83,7 @@ export class ActivitiesRepository implements IActivitiesRepository {
         }
     }
 
-    public async getActivitiesForMonth(userId: string, month: number, year: number) {
+    public async getActivitiesForMonth(userId: string, month: number, year: number): Promise<any> {
         try {
             const dbResponse = await this.db.raw(`
                 SELECT * from activities

@@ -4,7 +4,7 @@ import { ActivityDataPoint } from "./ActivityDataPoint";
 import { log } from "../../log";
 import { parseAsDateOrThrow } from "../lib/parsers/parsers";
 
-export class Activity {
+export class ActivityWithData {
     public constructor(
         public readonly date: string,
         public readonly activityName: string,
@@ -14,7 +14,7 @@ export class Activity {
     public static create(parsedXml: any, userId: string) {
         const datums = parsedXmlToActivityDataPoints(parsedXml, userId);
 
-        return new Activity(getRunDate(parsedXml).toISOString(), getRunName(parsedXml), datums);
+        return new ActivityWithData(getRunDate(parsedXml).toISOString(), getRunName(parsedXml), datums);
     }
 }
 

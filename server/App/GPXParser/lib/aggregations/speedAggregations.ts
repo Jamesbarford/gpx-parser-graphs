@@ -1,6 +1,5 @@
 import { round } from "lodash";
 
-import { ActivityDataPoint } from "../../model/ActivityDataPoint";
 import { SpeedAndDistance } from "../../model/SpeedAndDistance";
 
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";

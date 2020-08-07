@@ -1,7 +1,7 @@
-import { Activity } from "../../GPXParser/model/Activity";
+import { ActivityWithData } from "../../GPXParser/model/ActivityWithData";
 
 export interface IActivitiesRepository {
-    insertActivity(activity: Activity, userId: string): Promise<any>;
+    insertActivity(activity: ActivityWithData, userId: string): Promise<any>;
     getSingle(userId: string, activityDate: string): Promise<any>;
     getAll(userId: string): Promise<any>;
     getCount(userId: string): Promise<any>;
@@ -10,7 +10,7 @@ export interface IActivitiesRepository {
 
 type InsertActivityRequest = {
     userId: string;
-    activity: Activity;
+    activity: ActivityWithData;
 };
 
 export class ActivitiesService {
