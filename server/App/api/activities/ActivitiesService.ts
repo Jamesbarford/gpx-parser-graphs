@@ -1,11 +1,13 @@
 import { ActivityWithData } from "../../GPXParser/model/ActivityWithData";
+import { Activity } from "../../GPXParser/model/Activity";
+import { ActivityDetails } from "../../GPXParser/model/ActivityDetails";
 
 export interface IActivitiesRepository {
-    insertActivity(activity: ActivityWithData, userId: string): Promise<any>;
-    getSingle(userId: string, activityDate: string): Promise<any>;
-    getAll(userId: string): Promise<any>;
-    getCount(userId: string): Promise<any>;
-    getActivitiesForMonth(userId: string, month: number, year: number): Promise<any>;
+    insertActivity(activity: ActivityWithData, userId: string): Promise<void>;
+    getSingle(userId: string, activityDate: string): Promise<ActivityDetails[]>;
+    getAll(userId: string): Promise<Activity[]>;
+    getCount(userId: string): Promise<number>;
+    getActivitiesForMonth(userId: string, month: number, year: number): Promise<Activity[]>;
 }
 
 type InsertActivityRequest = {
@@ -13,51 +15,37 @@ type InsertActivityRequest = {
     activity: ActivityWithData;
 };
 
+type GetActivityDetailsRequest = {
+    userId: string;
+    date: string;
+};
+
+type GetActivitiesForMonthRequest = {
+    userId: string;
+    month: number;
+    year: number;
+};
+
 export class ActivitiesService {
     public constructor(private readonly activitiesRepository: IActivitiesRepository) {}
 
     public async insertActivity(req: InsertActivityRequest): Promise<any> {
-        try {
-            return await this.activitiesRepository.insertActivity(req.activity, req.userId);
-        } catch (e) {
-            throw e;
-        }
+        return await this.activitiesRepository.insertActivity(req.activity, req.userId);
     }
 
-    public async getSingle(req: { userId: string; date: string }): Promise<any> {
-        try {
-            return await this.activitiesRepository.getSingle(req.userId, req.date);
-        } catch (e) {
-            throw e;
-        }
+    public async getSingle(req: GetActivityDetailsRequest): Promise<ActivityDetails[]> {
+        return await this.activitiesRepository.getSingle(req.userId, req.date);
     }
 
     public async getAll(req: { userId: string }): Promise<any> {
-        try {
-            return await this.activitiesRepository.getAll(req.userId);
-        } catch (e) {
-            throw e;
-        }
+        return await this.activitiesRepository.getAll(req.userId);
     }
 
-    public async getCount(req: { userId: string }): Promise<any> {
-        try {
-            console.log(req);
-            return await this.activitiesRepository.getCount(req.userId);
-        } catch (e) {
-            throw e;
-        }
+    public async getCount(req: { userId: string }): Promise<number> {
+        return await this.activitiesRepository.getCount(req.userId);
     }
 
-    public async getActivitiesForMonth(req: {
-        userId: string;
-        month: number;
-        year: number;
-    }): Promise<any> {
-        try {
-            return await this.activitiesRepository.getActivitiesForMonth(req.userId, req.month, req.year);
-        } catch (e) {
-            throw e;
-        }
+    public async getActivitiesForMonth(req: GetActivitiesForMonthRequest): Promise<Activity[]> {
+        return await this.activitiesRepository.getActivitiesForMonth(req.userId, req.month, req.year);
     }
 }
