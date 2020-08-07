@@ -10,26 +10,27 @@ export interface IActivitiesRepository {
     getActivitiesForMonth(userId: string, month: number, year: number): Promise<Activity[]>;
 }
 
-type InsertActivityRequest = {
+interface UserRequest {
     userId: string;
+}
+
+interface InsertActivityRequest extends UserRequest {
     activity: ActivityWithData;
-};
+}
 
-type GetActivityDetailsRequest = {
-    userId: string;
+interface GetActivityDetailsRequest extends UserRequest {
     date: string;
-};
+}
 
-type GetActivitiesForMonthRequest = {
-    userId: string;
+interface GetActivitiesForMonthRequest extends UserRequest {
     month: number;
     year: number;
-};
+}
 
 export class ActivitiesService {
     public constructor(private readonly activitiesRepository: IActivitiesRepository) {}
 
-    public async insertActivity(req: InsertActivityRequest): Promise<any> {
+    public async insertActivity(req: InsertActivityRequest): Promise<void> {
         return await this.activitiesRepository.insertActivity(req.activity, req.userId);
     }
 
@@ -37,11 +38,11 @@ export class ActivitiesService {
         return await this.activitiesRepository.getSingle(req.userId, req.date);
     }
 
-    public async getAll(req: { userId: string }): Promise<any> {
+    public async getAll(req: UserRequest): Promise<Activity[]> {
         return await this.activitiesRepository.getAll(req.userId);
     }
 
-    public async getCount(req: { userId: string }): Promise<number> {
+    public async getCount(req: UserRequest): Promise<number> {
         return await this.activitiesRepository.getCount(req.userId);
     }
 
