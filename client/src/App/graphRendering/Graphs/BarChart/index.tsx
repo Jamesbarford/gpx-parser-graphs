@@ -31,16 +31,7 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
         });
 
         const observer = new ResizeObserver(entries => {
-            for (const entry of entries) {
-                this.setState({
-                    width: entry.contentRect.width - 100
-                });
-                const { left, top, width, height } = entry.contentRect;
-
-                console.log("Element:", entry.target);
-                console.log(`Element's size: ${width}px x ${height}px`);
-                console.log(`Element's paddings: ${top}px ; ${left}px`);
-            }
+            this.setState({ width: entries[0].contentRect.width - 100 });
         });
 
         observer.observe(this.svgWrapper.current);
@@ -81,9 +72,9 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
         d3.select(svg)
             .append("g")
             .call(
-                d3.axisLeft(y).ticks(4).tickFormat(x => {
-                    return x + "";
-                })
+                d3
+                    .axisLeft(y)
+                    .tickFormat(x => x + "")
             );
     }
 
