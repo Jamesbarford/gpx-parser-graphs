@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Typography, List } from "@material-ui/core";
+import { List, Typography } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { connect } from "react-redux";
 
@@ -34,31 +34,70 @@ export class Overview extends React.Component<OverviewProps> {
                 <RenderOnRequestStateMergeInitialAndLoading
                     requestState={this.props.allActivitiesRequestState}
                     LoadingComponent={
-                        <>
-                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                        </>
+                        this.props.activityIds.length > 0 ? (
+                            this.renderList
+                        ) : (
+                            <>
+                                <Skeleton
+                                    variant="rect"
+                                    style={{ marginTop: "5px", height: "60px" }}
+                                    animation="wave"
+                                />
+                                <Skeleton
+                                    variant="rect"
+                                    style={{ marginTop: "5px", height: "60px" }}
+                                    animation="wave"
+                                />
+                                <Skeleton
+                                    variant="rect"
+                                    style={{ marginTop: "5px", height: "60px" }}
+                                    animation="wave"
+                                />
+                                <Skeleton
+                                    variant="rect"
+                                    style={{ marginTop: "5px", height: "60px" }}
+                                    animation="wave"
+                                />
+                                <Skeleton
+                                    variant="rect"
+                                    style={{ marginTop: "5px", height: "60px" }}
+                                    animation="wave"
+                                />
+                                <Skeleton
+                                    variant="rect"
+                                    style={{ marginTop: "5px", height: "60px" }}
+                                    animation="wave"
+                                />
+                                <Skeleton
+                                    variant="rect"
+                                    style={{ marginTop: "5px", height: "60px" }}
+                                    animation="wave"
+                                />
+                            </>
+                        )
                     }
                     ErrorComponent={
                         <Typography color="error" variant="h6">
                             {this.props.allActivitiesRequestState.error}
                         </Typography>
                     }
-                    SuccessComponent={
-                        <List>
-                            {this.props.activityIds.map(id => (
-                                <ActivityConnected key={id} activityISODate={id} />
-                            ))}
-                        </List>
-                    }
+                    SuccessComponent={this.renderList}
                 />
             </PageContainer>
         );
+    }
+
+    private get renderList(): JSX.Element {
+        if (this.props.activityIds.length > 0) {
+            return (
+                <List>
+                    {this.props.activityIds.map(id => (
+                        <ActivityConnected key={id} activityISODate={id} />
+                    ))}
+                </List>
+            );
+        }
+        return <Typography variant="h6">You have no activities!</Typography>;
     }
 }
 
