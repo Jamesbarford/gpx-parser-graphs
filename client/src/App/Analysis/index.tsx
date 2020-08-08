@@ -41,7 +41,6 @@ class Analysis extends React.Component<AnalysisProps, any> {
     }
 
     public render() {
-        console.log(this.props.requestState)
         return (
             <PageContainer>
                 <RenderOnRequestStateMergeInitialAndLoading

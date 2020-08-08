@@ -5,6 +5,7 @@ import * as d3 from "d3";
 
 import { SpeedAndDistance } from "../../../../store/models/SpeedAndDistance";
 import { margin } from "../../utilities/margins";
+import { formatTimeInMinutes } from "../../../../lib/formatters/timeFormatters";
 
 interface BarChartState {
     width: number;
@@ -23,7 +24,7 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
         height: 400
     };
 
-    public componentDidMount() {
+    public componentDidMount(): void {
         if (isNil(this.svgWrapper.current)) return;
 
         this.setState({ width: this.svgWrapper.current.clientWidth }, () => {
@@ -37,16 +38,18 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
         observer.observe(this.svgWrapper.current);
     }
 
-    private renderRectangles(svg: SVGSVGElement | null) {
+    private renderRectangles(svg: SVGSVGElement | null): void {
         const x = d3
             .scaleBand()
             .range([0, this.state.width + margin.right])
             .domain(this.props.activityData.map((d, i) => `${i + 1} ${d.distanceFormat}`))
             .padding(0.2);
 
+        const minValue = (d3.min(this.props.activityData, d => d.speed) || 0) - 1;
+
         const y = d3
             .scaleLinear()
-            .domain([0, d3.max(this.props.activityData, d => d.speed) || 0])
+            .domain([minValue, d3.max(this.props.activityData, d => d.speed) || 0])
             .nice()
             .range([this.state.height - margin.top, margin.bottom]);
 
@@ -58,7 +61,8 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .attr("fill", "#69b3a2")
             .attr("y", d => y(d.speed))
             .attr("x", (d, i) => x(`${i + 1} ${d.distanceFormat}`) || i + 1)
-            .attr("height", d => y(0) - y(d.speed))
+            .attr("height", d => y(minValue) - y(d.speed))
+            .attr("transform", "translate(0, 5)")
             .attr("width", x.bandwidth());
 
         d3.select(svg)
@@ -69,13 +73,7 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .attr("transform", "rotate(-45)")
             .style("text-anchor", "end");
 
-        d3.select(svg)
-            .append("g")
-            .call(
-                d3
-                    .axisLeft(y)
-                    .tickFormat(x => x + "")
-            );
+        d3.select(svg).append("g").call(d3.axisLeft(y).ticks(6).tickFormat(formatTimeInMinutes));
     }
 
     public render() {
