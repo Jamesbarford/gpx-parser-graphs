@@ -6,6 +6,11 @@ import * as d3 from "d3";
 import { SpeedAndDistance } from "../../../../store/models/SpeedAndDistance";
 import { margin } from "../../utilities/margins";
 import { formatTimeInMinutes } from "../../../../lib/formatters/timeFormatters";
+import {
+    getAverageSpeed,
+    getFastestSpeed,
+    getSlowestSpeed
+} from "../../../../lib/aggregations/speedAggregations";
 
 interface BarChartState {
     width: number;
@@ -45,13 +50,11 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .domain(this.props.activityData.map((d, i) => `${i + 1} ${d.distanceFormat}`))
             .padding(0.2);
 
-        const minValue = (d3.min(this.props.activityData, d => d.speed) || 0) - 1;
+        const fastestSpeed: number = getFastestSpeed(this.props.activityData) - 1;
+        const slowestSpeed: number = getSlowestSpeed(this.props.activityData) + 1;
+        const averageSpeed = getAverageSpeed(this.props.activityData);
 
-        const y = d3
-            .scaleLinear()
-            .domain([minValue, d3.max(this.props.activityData, d => d.speed) || 0])
-            .nice()
-            .range([this.state.height - margin.top, margin.bottom]);
+        const y = d3.scaleLinear().range([this.state.height, 0]).domain([slowestSpeed, fastestSpeed]);
 
         d3.select(svg)
             .append("g")
@@ -61,19 +64,26 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .attr("fill", "#69b3a2")
             .attr("y", d => y(d.speed))
             .attr("x", (d, i) => x(`${i + 1} ${d.distanceFormat}`) || i + 1)
-            .attr("height", d => y(minValue) - y(d.speed))
-            .attr("transform", "translate(0, 5)")
+            .attr("height", d => y(slowestSpeed) - y(d.speed))
             .attr("width", x.bandwidth());
 
         d3.select(svg)
             .append("g")
-            .attr("transform", `translate(0, ${this.state.height - margin.top})`)
+            .attr("transform", `translate(0, ${this.state.height})`)
             .call(d3.axisBottom(x))
             .selectAll("text")
             .attr("transform", "rotate(-45)")
             .style("text-anchor", "end");
 
         d3.select(svg).append("g").call(d3.axisLeft(y).ticks(6).tickFormat(formatTimeInMinutes));
+
+        d3.select(svg)
+            .append("line")
+            .style("stroke", "black")
+            .attr("x1", 0)
+            .attr("y1", y(averageSpeed))
+            .attr("x2", this.state.width)
+            .attr("y2", y(averageSpeed));
     }
 
     public render() {

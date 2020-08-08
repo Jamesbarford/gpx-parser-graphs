@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { CssBaseline } from "@material-ui/core";
 
 import { store } from "./store/store";
-import { GpxUploadConnected } from "./components/GpxUploader";
 import { AppRouter } from "./App/Router";
 
 if (process.env.NODE_ENV === "development") {
@@ -16,7 +15,6 @@ if (process.env.NODE_ENV === "development") {
 const App: React.FC = () => (
     <Provider store={store}>
         <CssBaseline />
-        <GpxUploadConnected />
         <AppRouter />
     </Provider>
 );

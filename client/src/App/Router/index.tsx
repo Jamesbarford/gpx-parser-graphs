@@ -1,10 +1,11 @@
 import * as React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { AppBar, Tab, Tabs } from "@material-ui/core";
+import { AppBar, Box, Tab, Tabs } from "@material-ui/core";
 import { isNil } from "lodash";
 
 import { OverviewConnected } from "../Overview";
 import { AnalysisConnected } from "../Analysis";
+import { NavMenu } from "./NavMenu";
 
 function a11yProps(index: number) {
     return {
@@ -33,24 +34,29 @@ export class AppRouter extends React.Component<{}, RouterState> {
     public render(): JSX.Element {
         return (
             <Router>
-                <AppBar position="static">
-                    <Tabs
-                        style={{
-                            backgroundColor: "white",
-                            color: "#333"
-                        }}
-                        value={this.state.selectedTab}
-                        onChange={this.setTab}
-                        aria-label="simple tabs example"
+                <AppBar position="static" style={{ backgroundColor: "white", color: "#333" }}>
+                    <Box
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        style={{ width: "100%" }}
                     >
-                        <Tab
-                            label="Overview"
-                            component={Link}
-                            color="secondary"
-                            to="/"
-                            {...a11yProps(RouterTabs.OVERVIEW)}
-                        />
-                    </Tabs>
+                        <Tabs
+                            value={this.state.selectedTab}
+                            onChange={this.setTab}
+                            aria-label="simple tabs example"
+                        >
+                            <Tab
+                                label="Overview"
+                                component={Link}
+                                color="secondary"
+                                to="/"
+                                {...a11yProps(RouterTabs.OVERVIEW)}
+                            />
+                        </Tabs>
+                        <NavMenu />
+                    </Box>
                 </AppBar>
 
                 <div>

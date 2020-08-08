@@ -56,3 +56,19 @@ export function getAllSpeedsForRun(
 export function getAverageSpeed(speedsAndDistances: Array<SpeedAndDistance>): number {
     return meanBy(speedsAndDistances, s => s.speed);
 }
+
+export function getFastestSpeed(speedsAndDistances: Array<SpeedAndDistance>): number {
+    let fastestSpeed: number = speedsAndDistances[0].speed;
+    for (const speedAndDist of speedsAndDistances) {
+        if (speedAndDist.speed < fastestSpeed) fastestSpeed = speedAndDist.speed;
+    }
+    return fastestSpeed;
+}
+
+export function getSlowestSpeed(speedsAndDistances: Array<SpeedAndDistance>): number {
+    let slowestSpeed: number = speedsAndDistances[0].speed;
+    for (const speedAndDist of speedsAndDistances) {
+        if (speedAndDist.speed > slowestSpeed) slowestSpeed = speedAndDist.speed;
+    }
+    return slowestSpeed;
+}
