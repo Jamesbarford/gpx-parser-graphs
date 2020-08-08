@@ -8,11 +8,15 @@ import { store } from "./store/store";
 import { GpxUploadConnected } from "./App/components/GpxUploader";
 import { AppRouter } from "./App/Router";
 
+if (process.env.NODE_ENV === "development") {
+    // easy for debugging
+    import("lodash").then(lodash => (window._ = lodash));
+}
 
 const App: React.FC = () => (
     <Provider store={store}>
         <CssBaseline />
-        <GpxUploadConnected/>
+        <GpxUploadConnected />
         <AppRouter />
     </Provider>
 );
@@ -21,8 +25,4 @@ const root = document.getElementById("root");
 
 if (isNil(root)) throw new Error("no valid root for application");
 
-render(<App/>, root);
-
-
-
-
+render(<App />, root);

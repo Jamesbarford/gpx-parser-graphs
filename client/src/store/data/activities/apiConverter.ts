@@ -52,9 +52,9 @@ function getActivityDetails(apiResponse: any): ActivityDetails {
 
     return {
         timestamp: parseISO(apiResponse.timestamp),
-        lat: apiResponse.lat,
-        lon: apiResponse.lon,
-        heartRate: apiResponse.heart_rate,
+        lat: +apiResponse.lat,
+        lon: +apiResponse.lon,
+        heartRate: +apiResponse.heart_rate,
         cadence: apiResponse.cadence
     };
 }

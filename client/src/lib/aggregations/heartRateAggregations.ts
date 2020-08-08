@@ -32,6 +32,7 @@ export function averageHeartRate(
     return averageHeartRates;
 }
 
-export function averageHeartRateWholeRun(datums: Array<ActivityDetails>): number {
-    return round(meanBy(datums, "heart_rate"));
+export function averageHeartRateWholeRun(datums: Array<ActivityDetails>): number | undefined {
+    const heartRate = round(meanBy(datums, "heartRate"));
+    return isNaN(heartRate) ? undefined : heartRate;
 }

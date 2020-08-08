@@ -1,4 +1,5 @@
 import { RequestState } from "../../../lib/persistance";
+import { SpeedAndDistance } from "../../models/SpeedAndDistance";
 
 export interface Activity {
     date: Date;
@@ -6,15 +7,19 @@ export interface Activity {
     type: string;
 }
 
-export interface ActivityWithRequestState extends Activity {
-    requestState: RequestState;
-}
+export type ActivityDictionary = Record<string, ActivityWithDetails>;
 
 export interface ActivityWithDetails extends ActivityWithRequestState {
     details?: ActivityDetails[];
+    speedsPerDistance?: SpeedAndDistance[];
+    allSpeeds?: SpeedAndDistance[];
+    totalDistance?: number;
+    averageHeartRate?: number;
 }
 
-export type ActivityDictionary = Record<string, ActivityWithDetails>;
+export interface ActivityWithRequestState extends Activity {
+    requestState: RequestState;
+}
 
 export interface ActivityDetails {
     timestamp: Date;

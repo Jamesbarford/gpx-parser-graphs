@@ -1,6 +1,5 @@
 import { round } from "lodash";
 
-
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
 import { getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
 import { getTotalTimeInMinutes } from "./timeAggregations";
@@ -48,13 +47,7 @@ export function getAllSpeedsForRun(
             const distance = getDistanceFormat(distanceFormat, distanceBetween);
             const time = getTotalTimeInMinutes([datum, nextDatum]);
 
-            acc.push(
-                new SpeedAndDistance(
-                    time / distance,
-                    (distanceAcc += distance),
-                    DistanceFormat.KILOMETERS
-                )
-            );
+            acc.push(new SpeedAndDistance(time / distance, (distanceAcc += distance), distanceFormat));
         }
         return acc;
     }, []);

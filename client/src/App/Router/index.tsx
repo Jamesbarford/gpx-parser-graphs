@@ -1,9 +1,9 @@
 import * as React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { AppBar, Tab, Tabs } from "@material-ui/core";
+import { isNil } from "lodash";
 
 import { OverviewConnected } from "../Overview";
-import { isNil } from "lodash";
 import { AnalysisConnected } from "../Analysis";
 
 function a11yProps(index: number) {

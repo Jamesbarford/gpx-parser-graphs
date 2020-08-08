@@ -19,6 +19,10 @@ import {
 import { RequestError } from "../../../lib/persistance";
 import { Activity, ActivityDetails } from "./types";
 import { toActivities, toActivityDetails } from "./apiConverter";
+import { getAllSpeedsForRun, getAverageSpeeds } from "../../../lib/aggregations/speedAggregations";
+import { averageHeartRateWholeRun } from "../../../lib/aggregations/heartRateAggregations";
+import { getTotalDistance } from "../../../lib/aggregations/distanceAggregations";
+import { SpeedAndDistance } from "../../models/SpeedAndDistance";
 
 export function getAllActivitiesThunk() {
     return async function (dispatch: DispatchThunk, getState: () => AppState) {
@@ -65,15 +69,35 @@ export function getActivityDetailsThunk(isoDate: string) {
 
         dispatch(new FetchActivityDetailsStart(isoDate));
         let activityDetails: Array<ActivityDetails>;
+        let speedsPerDistance: Array<SpeedAndDistance>;
+        let allSpeeds: Array<SpeedAndDistance>;
+        let totalDistance: number;
+        let averageHeartRate: number | undefined;
+
         try {
             const response = await getActivityDetailsReq(userId, isoDate);
-            console.log(response)
             activityDetails = toActivityDetails(response.data);
+
+            const distanceFormat = getState().activities.distanceFormat;
+
+            speedsPerDistance = getAverageSpeeds(activityDetails, distanceFormat);
+            allSpeeds = getAllSpeedsForRun(activityDetails, distanceFormat);
+            totalDistance = getTotalDistance(activityDetails, distanceFormat);
+            averageHeartRate = averageHeartRateWholeRun(activityDetails);
         } catch (e) {
             dispatch(new FetchActivityDetailsFailure(isoDate, RequestError.create(e)));
             return;
         }
 
-        dispatch(new FetchActivityDetailsSuccess(isoDate, activityDetails));
+        dispatch(
+            new FetchActivityDetailsSuccess(
+                isoDate,
+                activityDetails,
+                speedsPerDistance,
+                allSpeeds,
+                totalDistance,
+                averageHeartRate
+            )
+        );
     };
 }

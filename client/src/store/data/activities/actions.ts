@@ -1,5 +1,6 @@
 import { RequestError } from "../../../lib/persistance";
 import { Activity, ActivityDetails } from "./types";
+import { SpeedAndDistance } from "../../models/SpeedAndDistance";
 
 export const enum ActivitiesActionTypes {
     FetchAllActivitiesStart = "Activities.FetchAllActivitiesStart",
@@ -55,7 +56,11 @@ export class FetchActivityDetailsSuccess {
     public readonly type = ActivitiesActionTypes.FetchActivityDetailsSuccess;
     public constructor(
         public readonly isoDate: string,
-        public readonly activityDetails: Array<ActivityDetails>
+        public readonly activityDetails: Array<ActivityDetails>,
+        public readonly speedsPerDistance: Array<SpeedAndDistance>,
+        public readonly allSpeeds: Array<SpeedAndDistance>,
+        public readonly totalDistance?: number,
+        public readonly averageHeartRate?: number
     ) {}
 }
 

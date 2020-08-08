@@ -85,7 +85,11 @@ export function activitiesReducer(
                     [action.isoDate]: {
                         ...state.byId[action.isoDate],
                         requestState: new Success(),
-                        details: action.activityDetails
+                        details: action.activityDetails,
+                        speedsPerDistance: action.speedsPerDistance,
+                        allSpeeds: action.allSpeeds,
+                        totalDistance: action.totalDistance,
+                        averageHeartRate: action.averageHeartRate
                     }
                 }
             };
