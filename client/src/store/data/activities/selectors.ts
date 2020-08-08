@@ -52,6 +52,13 @@ export function getAllActivitySpeedsPerDistance(
     return getActivityWithDetails(appState, isoDate)?.allSpeeds || [];
 }
 
+export function getAverageSpeedsPerDistance(
+    appState: AppState,
+    isoDate: string
+): Array<SpeedAndDistance> {
+    return getActivityWithDetails(appState, isoDate)?.speedsPerDistance || [];
+}
+
 // FIXME: should be calculated server side
 export function getTotalDistance(appState: AppState, isoDate: string): number {
     return getAverageSpeedMemo(getAllActivitySpeedsPerDistance(appState, isoDate));

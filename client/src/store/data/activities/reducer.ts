@@ -110,7 +110,7 @@ function updateDictionary(state: ActivitiesState, activities: Array<Activity>) {
     const newActivities = activities.reduce((dict: ActivityDictionary, activity) => {
         dict[activity.date.toISOString()] = {
             ...activity,
-            requestState: new Success()
+            requestState: new Initial()
         };
         return dict;
     }, {});
