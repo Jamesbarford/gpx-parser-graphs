@@ -21,12 +21,14 @@ const plugins = [
 ];
 
 if (development) {
-    plugins.push(new ForkTsCheckerWebpackPlugin({
-        eslint: {
-            enabled: true,
-            files: "./src/*"
-        }
-    }));
+    plugins.push(
+        new ForkTsCheckerWebpackPlugin({
+            eslint: {
+                enabled: true,
+                files: "./src/*"
+            }
+        })
+    );
 }
 
 if (production) {
@@ -39,7 +41,7 @@ const WebpackConfig = {
     output: {
         filename: "[name].[contenthash].js",
         path: path.resolve(__dirname, "dist"),
-        publicPath: '/',
+        publicPath: "/",
         pathinfo: !development
     },
     plugins,
@@ -77,30 +79,30 @@ const WebpackConfig = {
             maxInitialRequests: Infinity,
             cacheGroups: production
                 ? {
-                    vendor: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name({ issuer }) {
-                            const { buildInfo } = issuer;
-                            const fullDir = buildInfo.fileDependencies
-                                ? buildInfo.fileDependencies.entries().next().value[0]
-                                : "vendor";
-                            if (fullDir === "vendor") {
-                                return fullDir;
-                            }
-                            const fullDirArr = fullDir.split("/");
-                            const isNodeModule = fullDirArr.includes("node_modules") ? "npm." : "";
-                            return `${isNodeModule}${fullDirArr[fullDirArr.length - 2]}-${
-                                fullDirArr[fullDirArr.length - 1]
-                            }`;
-                        }
-                    }
-                }
+                      vendor: {
+                          test: /[\\/]node_modules[\\/]/,
+                          name({ issuer }) {
+                              const { buildInfo } = issuer;
+                              const fullDir = buildInfo.fileDependencies
+                                  ? buildInfo.fileDependencies.entries().next().value[0]
+                                  : "vendor";
+                              if (fullDir === "vendor") {
+                                  return fullDir;
+                              }
+                              const fullDirArr = fullDir.split("/");
+                              const isNodeModule = fullDirArr.includes("node_modules") ? "npm." : "";
+                              return `${isNodeModule}${fullDirArr[fullDirArr.length - 2]}-${
+                                  fullDirArr[fullDirArr.length - 1]
+                              }`;
+                          }
+                      }
+                  }
                 : {
-                    vendor: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: "vendor"
-                    }
-                }
+                      vendor: {
+                          test: /[\\/]node_modules[\\/]/,
+                          name: "vendor"
+                      }
+                  }
         }
     },
     devtool: development ? "inline-source-map" : "source-map",
@@ -108,10 +110,10 @@ const WebpackConfig = {
         extensions: [".js", ".json", ".ts", ".tsx"]
     },
     devServer: {
-        contentBase: "./dist",
+        contentBase: "./",
         compress: true,
         port: 5000,
-        historyApiFallback: true,
+        historyApiFallback: { disableDotRule: true },
         proxy: {
             "/api": {
                 target: "http://localhost:3000",
@@ -119,7 +121,6 @@ const WebpackConfig = {
                 changeOrigin: false
             }
         }
-
     },
     module: {
         rules: [

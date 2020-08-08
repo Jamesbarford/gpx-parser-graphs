@@ -1,4 +1,4 @@
-import { round } from "lodash";
+import { round, meanBy } from "lodash";
 
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
 import { getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
@@ -51,4 +51,8 @@ export function getAllSpeedsForRun(
         }
         return acc;
     }, []);
+}
+
+export function getAverageSpeed(speedsAndDistances: Array<SpeedAndDistance>): number {
+    return meanBy(speedsAndDistances, s => s.speed);
 }
