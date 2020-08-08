@@ -1,4 +1,4 @@
-import { RequestError } from "../../../lib/persistance";
+import { RequestError } from "../../lib/persistance";
 
 export const enum UploadGPXActionTypes {
     UploadGPXFileStart = "UploadGpx.UploadGPXFileStart",

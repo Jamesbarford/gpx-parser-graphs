@@ -2,7 +2,7 @@ import thunk, { ThunkDispatch } from "redux-thunk";
 import { createStore, combineReducers, AnyAction, applyMiddleware, compose, Store, Action } from "redux";
 import { createLogger } from "redux-logger";
 import { isPlainObject, isFunction } from "lodash";
-import { uploadGpxReducer, UploadGpxState } from "../App/components/GpxUploader/reducer";
+import { uploadGpxReducer, UploadGpxState } from "../components/GpxUploader/reducer";
 import { activitiesReducer, ActivitiesState } from "./data/activities/reducer";
 import { authReducer, AuthState } from "./auth/reducer";
 
@@ -48,3 +48,7 @@ const enhancers = compose(
 );
 
 export const store = createStore(reducers, enhancers);
+
+if(process.env.NODE_ENV === "development") {
+    (<any>window).store = store
+}

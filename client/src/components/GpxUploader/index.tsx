@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Button, Modal } from "@material-ui/core";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 
-import { DispatchThunk } from "../../../store/store";
+import { DispatchThunk } from "../../store/store";
 import { uploadGPXThunk } from "./thunks";
 
 interface GpxUploadState {

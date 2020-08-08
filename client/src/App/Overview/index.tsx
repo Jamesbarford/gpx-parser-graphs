@@ -1,13 +1,15 @@
 import * as React from "react";
-import { Typography, Container, Card, CardContent, List } from "@material-ui/core";
+import { Typography, List } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { connect } from "react-redux";
 
 import { getAllActivitiesThunk } from "../../store/data/activities/thunks";
 import { AppState, DispatchThunk } from "../../store/store";
-import { RequestError, RequestState, RequestStates } from "../../lib/persistance";
+import { RequestState } from "../../lib/persistance";
 import { getAllActivitiesRequestState, getAllActivityIds } from "../../store/data/activities/selectors";
-import { ActivityConnected } from "../components/Activity";
+import { ActivityConnected } from "../../components/Activity";
+import { PageContainer } from "../../components/PageContainer";
+import { RenderOnRequestStateMergeInitialAndLoading } from "../../components/RenderOnRequestState";
 
 interface MapStateToProps {
     activityIds: Array<string>;
@@ -27,53 +29,36 @@ export class Overview extends React.Component<OverviewProps> {
 
     public render(): JSX.Element {
         return (
-            <Container style={{ marginTop: "30px" }} fixed>
-                <Card>
-                    <CardContent>
-                        <Typography variant="h4">Activity Overview</Typography>
-                        {this.renderList}
-                    </CardContent>
-                </Card>
-            </Container>
+            <PageContainer>
+                <Typography variant="h4">Activity Overview</Typography>
+                <RenderOnRequestStateMergeInitialAndLoading
+                    requestState={this.props.allActivitiesRequestState}
+                    LoadingComponent={
+                        <>
+                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                            <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
+                        </>
+                    }
+                    ErrorComponent={
+                        <Typography color="error" variant="h6">
+                            {this.props.allActivitiesRequestState.error}
+                        </Typography>
+                    }
+                    SuccessComponent={
+                        <List>
+                            {this.props.activityIds.map(id => (
+                                <ActivityConnected key={id} activityISODate={id} />
+                            ))}
+                        </List>
+                    }
+                />
+            </PageContainer>
         );
-    }
-
-    private get renderList(): JSX.Element | null {
-        if (RequestError.is(this.props.allActivitiesRequestState)) {
-            return (
-                <Typography color="error" variant="h6">
-                    {this.props.allActivitiesRequestState.error}
-                </Typography>
-            );
-        }
-
-        switch (this.props.allActivitiesRequestState.state) {
-            case RequestStates.Initial:
-            case RequestStates.Loading:
-                return (
-                    <>
-                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                        <Skeleton variant="rect" style={{ marginTop: "5px" }} animation="wave" />
-                    </>
-                );
-
-            case RequestStates.Success:
-                return (
-                    <List>
-                        {this.props.activityIds.map(id => (
-                            <ActivityConnected key={id} activityISODate={id} />
-                        ))}
-                    </List>
-                );
-
-            default:
-                return null;
-        }
     }
 }
 

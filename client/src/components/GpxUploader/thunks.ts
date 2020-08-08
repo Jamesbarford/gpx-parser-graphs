@@ -2,8 +2,8 @@ import { Dispatch } from "redux";
 import { isNil } from "lodash";
 
 import { UploadGPXFileFailure, UploadGPXFileStart, UploadGPXFileSuccess } from "./actions";
-import { RequestError } from "../../../lib/persistance";
-import { postGPXFileReq } from "../../../apiRequests/upload";
+import { RequestError } from "../../lib/persistance";
+import { postGPXFileReq } from "../../apiRequests/upload";
 
 export function uploadGPXThunk(gpxFile: File) {
     return async function(dispatch: Dispatch<any>) {

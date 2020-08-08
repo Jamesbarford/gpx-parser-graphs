@@ -4,7 +4,7 @@ import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 import { ActivityIcon } from "../ActivityIcon";
-import { AppState } from "../../../store/store";
+import { AppState } from "../../store/store";
 import {
     getActivityDateFormattedFromISODateOwnProp,
     getActivityNameFromISODateOwnProp,

@@ -1,5 +1,5 @@
-import { AppState } from "../../../store/store";
-import { getActivityWithDetails } from "../../../store/data/activities/selectors";
+import { AppState } from "../../store/store";
+import { getActivityWithDetails } from "../../store/data/activities/selectors";
 import { format } from "date-fns";
 
 interface ActivityDateOwnProp {

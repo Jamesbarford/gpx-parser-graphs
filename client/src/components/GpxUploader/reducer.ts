@@ -1,6 +1,6 @@
 import { UploadGPXActions, UploadGPXActionTypes } from "./actions";
-import { Initial, Loading, RequestState, Success } from "../../../lib/persistance";
-import { shallowUpdate } from "../../../lib/util";
+import { Initial, Loading, RequestState, Success } from "../../lib/persistance";
+import { shallowUpdate } from "../../lib/util";
 
 export interface UploadGpxState {
     requestState: RequestState;

@@ -63,7 +63,7 @@ export class AppRouter extends React.Component<{}, RouterState> {
                             children={p => {
                                 const isoDate = p.match?.params?.id;
                                 if (isNil(isoDate)) return <span>No activity found</span>;
-                                return <AnalysisConnected isoDate={isoDate} />;
+                                return <AnalysisConnected activityISODate={isoDate} />;
                             }}
                         />
                         <Route exact path="/activity">

@@ -67,6 +67,11 @@ export function getActivityDetailsThunk(isoDate: string) {
         const state = getState();
         const userId = getUserId(state);
 
+        if(!(isoDate in state.activities.byId)) {
+            // FIXME: need functionality to get 1 activity
+            await dispatch(getAllActivitiesThunk())
+        }
+
         dispatch(new FetchActivityDetailsStart(isoDate));
         let activityDetails: Array<ActivityDetails>;
         let speedsPerDistance: Array<SpeedAndDistance>;
@@ -78,7 +83,7 @@ export function getActivityDetailsThunk(isoDate: string) {
             const response = await getActivityDetailsReq(userId, isoDate);
             activityDetails = toActivityDetails(response.data);
 
-            const distanceFormat = getState().activities.distanceFormat;
+            const distanceFormat = state.activities.distanceFormat;
 
             speedsPerDistance = getAverageSpeeds(activityDetails, distanceFormat);
             allSpeeds = getAllSpeedsForRun(activityDetails, distanceFormat);
