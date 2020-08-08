@@ -1,4 +1,4 @@
-import { ActivityDetails } from "../../model/ActivityDetails";
+import { ActivityDetails } from "../../store/data/activities/types";
 
 export function getDistanceBetweenDatums(datumOne: ActivityDetails, datumTwo: ActivityDetails): number {
     return getDistanceFromLatLonInKm(datumOne.lat, datumOne.lon, datumTwo.lat, datumTwo.lon);

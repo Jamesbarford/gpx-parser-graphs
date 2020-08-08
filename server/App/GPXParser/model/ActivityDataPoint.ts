@@ -24,7 +24,7 @@ export class ActivityDataPoint implements ActivityDetails {
         cad?: any
     ): ActivityDataPoint {
         if ([lat, lon, timestamp, activity_date, user_id].some(isNil)) {
-            throw new Error("Invalid strava data point");
+            throw new Error("Invalid data point");
         }
 
         return new ActivityDataPoint(

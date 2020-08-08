@@ -1,11 +1,12 @@
 import { round } from "lodash";
 
-import { SpeedAndDistance } from "../../model/SpeedAndDistance";
 
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
-import { DistanceFormat, getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
+import { getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
 import { getTotalTimeInMinutes } from "./timeAggregations";
-import { ActivityDetails } from "../../model/ActivityDetails";
+import { ActivityDetails } from "../../store/data/activities/types";
+import { SpeedAndDistance } from "../../store/models/SpeedAndDistance";
+import { DistanceFormat } from "../../store/models/DistanceFormat";
 
 // this may not work
 export function getAverageSpeeds(

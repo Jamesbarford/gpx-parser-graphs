@@ -1,4 +1,4 @@
-import { formatTimeInMinutes } from "../../lib/timeFormatters";
+import { formatTimeInMinutes } from "../../lib/formatters/timeFormatters";
 import { DistanceFormat } from "./DistanceFormat";
 
 

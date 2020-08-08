@@ -1,10 +1,9 @@
 import { isNil, mean, meanBy, round } from "lodash";
 
-import { ActivityDataPoint } from "../../model/ActivityDataPoint";
-
 import { getDistanceBetweenDatums } from "../distanceCalulations/getDistanceBetweenDatums";
-import { DistanceFormat, getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
-import { ActivityDetails } from "../../model/ActivityDetails";
+import { getDistanceFormat } from "../distanceCalulations/getDistanceFormat";
+import { ActivityDetails } from "../../store/data/activities/types";
+import { DistanceFormat } from "../../store/models/DistanceFormat";
 
 export function averageHeartRate(
     datums: Array<ActivityDetails>,
@@ -16,11 +15,11 @@ export function averageHeartRate(
 
     datums.forEach((datum, i) => {
         const nextDatum = datums[i + 1];
-        if (nextDatum && !isNil(datum.heart_rate)) {
+        if (nextDatum && !isNil(datum.heartRate)) {
             const distanceBetween = getDistanceBetweenDatums(datum, nextDatum);
 
             distanceAccumulator += getDistanceFormat(distanceFormat, distanceBetween);
-            hrAccumulator.push(datum.heart_rate);
+            hrAccumulator.push(datum.heartRate);
 
             if (round(distanceAccumulator, 3) > 0.995) {
                 averageHeartRates.push(round(mean(hrAccumulator)));

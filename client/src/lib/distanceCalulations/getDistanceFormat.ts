@@ -1,7 +1,4 @@
-export const enum DistanceFormat {
-    MILES = "miles",
-    KILOMETERS = "km"
-}
+import { DistanceFormat } from "../../store/models/DistanceFormat";
 
 export function getDistanceFormat(distanceFormat: DistanceFormat, distance: number): number {
     switch (distanceFormat) {
