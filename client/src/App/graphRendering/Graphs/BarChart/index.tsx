@@ -81,7 +81,7 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .join("text")
             .attr("class", "barText")
             .attr("text-anchor", "middle")
-            .attr("transform", "translate(" + x.bandwidth() / 2 + ", 7)")
+            .attr("transform", `translate(${x.bandwidth() / 2}, 7)`)
             .attr("x", (d, i) => x(`${i + 1} ${d.distanceFormat}`) || i + 1)
             .attr("y", d => y(d.speed) - 10)
             .text(d => formatTimeInMinutes(+d.speed));
@@ -103,8 +103,8 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .attr("fill", "currentColor")
             .append("text")
             .attr("text-anchor", "end")
-            .attr("transform", `translate(-8, ${averageYAxisPosition + 5})`)
-            .text(`Avg: ${formatTimeInMinutes(averageSpeed)}`);
+            .attr("transform", `translate(${this.state.width}, ${averageYAxisPosition - 10})`)
+            .text(`Average: ${formatTimeInMinutes(averageSpeed)}`);
 
         d3.select(svg)
             .append("text")
