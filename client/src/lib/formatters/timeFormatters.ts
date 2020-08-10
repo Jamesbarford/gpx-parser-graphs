@@ -7,7 +7,7 @@ export function formatTimeInMinutes(timeInMinutes: number) {
     if (isNil(timeArr[1])) return `${minutes}:00`;
 
     const valueAsSeconds = +("0." + timeArr[1]) * 60;
-    const seconds = round(valueAsSeconds);
+    const seconds = `${round(valueAsSeconds)}`;
 
-    return `${minutes}:${seconds}`;
+    return `${minutes}:` + (seconds.length === 1 ? `0${seconds}` : seconds);
 }

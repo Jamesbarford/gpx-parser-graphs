@@ -77,13 +77,31 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
 
         d3.select(svg).append("g").call(d3.axisLeft(y).ticks(6).tickFormat(formatTimeInMinutes));
 
+        const averageYAxisPosition = y(averageSpeed);
+
         d3.select(svg)
             .append("line")
             .style("stroke", "black")
             .attr("x1", 0)
-            .attr("y1", y(averageSpeed))
+            .attr("y1", averageYAxisPosition)
             .attr("x2", this.state.width)
-            .attr("y2", y(averageSpeed));
+            .attr("y2", averageYAxisPosition);
+
+        d3.select(svg)
+            .append("g")
+            .attr("fill", "currentColor")
+            .append("text")
+            .attr("text-anchor", "end")
+            .attr("transform", `translate(-8, ${averageYAxisPosition + 5})`)
+            .text(`Avg: ${formatTimeInMinutes(averageSpeed)}`);
+
+        d3.select(svg)
+            .append("text")
+            .attr("class", "y label")
+            .attr("fill", "currentColor")
+            .attr("text-anchor", "end")
+            .attr("transform", `translate(${-margin.right - 15}, ${margin.top}) rotate(-90)`)
+            .text(`Minutes per ${this.props.activityData[0].distanceFormat}`);
     }
 
     public render() {
