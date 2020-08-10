@@ -67,6 +67,18 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .attr("height", d => y(slowestSpeed) - y(d.speed))
             .attr("width", x.bandwidth());
 
+
+        d3.select(svg)
+            .selectAll(".barText")
+            .data(this.props.activityData)
+            .join("text")
+            .attr("class", "barText")
+            .attr("text-anchor", "middle")
+            .attr("transform", "translate(" + x.bandwidth() / 2 + ",-3)")
+            .attr("x",  (d, i) => x(`${i + 1} ${d.distanceFormat}`) || i + 1)
+            .text( (d) => { return formatTimeInMinutes(+d.speed) })
+            .attr("y",  (d) => { return y(d.speed) - 10; });
+
         d3.select(svg)
             .append("g")
             .attr("transform", `translate(0, ${this.state.height})`)
@@ -94,6 +106,7 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .attr("text-anchor", "end")
             .attr("transform", `translate(-8, ${averageYAxisPosition + 5})`)
             .text(`Avg: ${formatTimeInMinutes(averageSpeed)}`);
+
 
         d3.select(svg)
             .append("text")
