@@ -1,8 +1,8 @@
-import { isNil, escape } from "lodash";
+import { isNil } from "lodash";
+import { Activity } from "gpx-parser-lite";
 
 import { ActivityDataPoint } from "./ActivityDataPoint";
-import { log } from "../../log";
-import { parseAsDateOrThrow } from "../lib/parsers/parsers";
+import { parseAsNumberOrThrow, parseAsDateOrThrow, parseAsDateToISOString } from "../lib/parsers/parsers";
 
 export class ActivityWithData {
     public constructor(
@@ -11,55 +11,38 @@ export class ActivityWithData {
         public readonly datum: Array<ActivityDataPoint>
     ) {}
 
-    public static create(parsedXml: any, userId: string) {
-        const datums = parsedXmlToActivityDataPoints(parsedXml, userId);
-
-        return new ActivityWithData(getRunDate(parsedXml).toISOString(), getRunName(parsedXml), datums);
+    public static create(activity: Activity, userId: string) {
+        return new ActivityWithData(activity.date, activity.name, toDataPoints(activity, userId));
     }
 }
 
-function parsedXmlToActivityDataPoints(parsedXml: any, userId: string): Array<ActivityDataPoint> {
-    const extensionKey = "gpxtpx:TrackPointExtension";
-    const heartRateKey = "gpxtpx:hr";
-    const cadenceKey = "gpxtpx:cad";
-    const distanceKey = "$";
+function toDataPoints(activity: Activity, userId: string): ActivityDataPoint[] {
+    const activityDataPoints: ActivityDataPoint[] = [];
+    const activityDate = parseAsDateToISOString(activity.date);
 
-    const runningData = parsedXml?.gpx?.trk?.[0]?.trkseg?.[0]?.trkpt;
-
-    if (isNil(runningData)) {
-        throw new Error("No data for activity");
-    }
-
-    const date = getRunDate(parsedXml);
-
-    return [].concat(runningData).reduce((stravaDatums: Array<ActivityDataPoint>, d: any) => {
+    for (const a of activity.activityDataPoints) {
         try {
-            stravaDatums.push(
-                ActivityDataPoint.create(
-                    d?.[distanceKey]?.lat,
-                    d?.[distanceKey]?.lon,
-                    d?.time?.[0],
-                    date.toISOString(),
+
+
+            if (isNil(a.timestamp)) {
+                throw new Error("Timestamp undefined for datapoint");
+            }
+
+            activityDataPoints.push(
+                new ActivityDataPoint(
+                    parseAsNumberOrThrow(a.latitude),
+                    parseAsNumberOrThrow(a.longitude),
+                    parseAsDateToISOString(a.timestamp),
+                    activityDate,
                     userId,
-                    d?.extensions?.[0]?.[extensionKey]?.[0]?.[heartRateKey]?.[0],
-                    d?.extensions?.[0]?.[extensionKey]?.[0]?.[cadenceKey]?.[0]
+                    isNil(a.heartRate) ? undefined :  parseAsNumberOrThrow(a.heartRate),
+                    isNil(a.cadence) ? undefined : parseAsNumberOrThrow(a.cadence)
                 )
-            );
-        } catch (error) {
-            log(error);
-            console.warn(`Invalid stravaDatum: ${JSON.stringify(d)}`);
+            )
+        } catch (e) {
+            throw new Error(`Failed to parse data: ${e}`);
         }
+    }
 
-        return stravaDatums;
-    }, []);
-}
-
-function getRunName(parsedXml: any): string {
-    const maybeName = parsedXml?.gpx?.trk?.[0]?.name?.[0];
-    return escape(maybeName || "No activity name");
-}
-
-function getRunDate(parsedXml: any): Date {
-    const date = parsedXml?.gpx?.metadata?.[0]?.time?.[0];
-    return parseAsDateOrThrow(date);
+    return activityDataPoints;
 }

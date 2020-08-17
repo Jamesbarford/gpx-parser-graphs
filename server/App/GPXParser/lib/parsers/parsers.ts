@@ -9,6 +9,11 @@ export function parseAsNumberOrThrow(maybeNumber: any): number {
     return parsed;
 }
 
+export function parseAsDateToISOString(maybeDate: any): string {
+    const parsedDate = parseAsDateOrThrow(maybeDate);
+    return parsedDate.toISOString();
+}
+
 export function parseAsDateOrThrow(maybeDate: any): Date {
     const parsed = parseISO(maybeDate);
     if (!isValid(parsed)) {
