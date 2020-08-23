@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon nodemon.json DB_USER=$DB_DEV_USER"
+    "build": "tsc",
+    "start:watch": "nodemon nodemon.json DB_USER=$DB_USER",
+    "start": "node ./App/index.js"
   },
   "keywords": [],
   "author": "James Barford-Evans",

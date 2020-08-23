@@ -1,6 +1,6 @@
 import { round, isNil } from "lodash";
 
-export function formatTimeInMinutes(timeInMinutes: number) {
+export function formatTimeInMinutes(timeInMinutes: number): string {
     const timeArr = String(timeInMinutes).split(".");
     const minutes = +timeArr[0];
 

@@ -1,11 +1,11 @@
-CREATE TABLE IF NOT EXISTS "public"."users" (
+CREATE TABLE IF NOT EXISTS users (
     "user_id" VARCHAR(100) NOT NULL PRIMARY KEY,
     "user_name" VARCHAR(100) NOT NULL,
     "user_email" VARCHAR(100) NOT NULL,
     "distance_formatting" bpchar(20) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS "public"."activities" (
+CREATE TABLE IF NOT EXISTS activities (
     "user_id" VARCHAR (100) NOT NULL,
     "activity_date" VARCHAR(100) NOT NULL,
     "activity_type" VARCHAR(20) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "public"."activities" (
     PRIMARY KEY ("user_id", "activity_date")
 );
 
-CREATE TABLE IF NOT EXISTS "public"."activity_data" (
+CREATE TABLE IF NOT EXISTS activity_data (
     "user_id" VARCHAR(100) NOT NULL,
     "activity_date" VARCHAR(100) NOT NULL,
     "activity_type" VARCHAR(20) NOT NULL,

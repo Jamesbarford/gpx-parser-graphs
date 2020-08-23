@@ -2,4 +2,9 @@ node_modules
 .idea
 dist
 *.gpx
-dev_config.sh
+dev.sh
+prod_config.sh
+env.sh
+dist-client
+dist-server
+.DS_STORE

@@ -3,8 +3,7 @@
     "target": "es5",
     "module": "commonjs",
     "lib": ["es2017", "es7", "es6"],
-    "declaration": true,
-    "outDir": "./dist",
+    "outDir": "../dist-server",
     "strict": true,
     "esModuleInterop": true
   },

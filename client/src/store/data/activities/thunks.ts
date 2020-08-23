@@ -35,7 +35,7 @@ export function getAllActivitiesThunk() {
             const response = await getAllActivitiesReq(userId);
             activities = toActivities(response.data);
         } catch (e) {
-            dispatch(new FetchAllActivitiesFailure(RequestError.create(e)));
+            dispatch(new FetchAllActivitiesFailure(RequestError.create(e.message)));
             return;
         }
 

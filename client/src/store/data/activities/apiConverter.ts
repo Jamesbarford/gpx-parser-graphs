@@ -6,6 +6,8 @@ import { objectHasAllKeys } from "../../../lib/util";
 export function toActivities(apiResponse: any): Array<Activity> {
     const activities: Array<Activity> = [];
 
+    if(!Array.isArray(apiResponse)) return activities;
+
     for (const a of apiResponse) {
         try {
             const activity = toActivity(a);

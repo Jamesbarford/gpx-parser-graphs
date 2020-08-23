@@ -40,7 +40,7 @@ const WebpackConfig = {
     mode,
     output: {
         filename: "[name].[contenthash].js",
-        path: path.resolve(__dirname, "dist"),
+        path: path.resolve(__dirname, "../dist-client"),
         publicPath: "/",
         pathinfo: !development
     },
@@ -77,27 +77,8 @@ const WebpackConfig = {
             chunks: "all",
             minSize: 0,
             maxInitialRequests: Infinity,
-            cacheGroups: production
-                ? {
-                      vendor: {
-                          test: /[\\/]node_modules[\\/]/,
-                          name({ issuer }) {
-                              const { buildInfo } = issuer;
-                              const fullDir = buildInfo.fileDependencies
-                                  ? buildInfo.fileDependencies.entries().next().value[0]
-                                  : "vendor";
-                              if (fullDir === "vendor") {
-                                  return fullDir;
-                              }
-                              const fullDirArr = fullDir.split("/");
-                              const isNodeModule = fullDirArr.includes("node_modules") ? "npm." : "";
-                              return `${isNodeModule}${fullDirArr[fullDirArr.length - 2]}-${
-                                  fullDirArr[fullDirArr.length - 1]
-                              }`;
-                          }
-                      }
-                  }
-                : {
+            cacheGroups: 
+                {
                       vendor: {
                           test: /[\\/]node_modules[\\/]/,
                           name: "vendor"

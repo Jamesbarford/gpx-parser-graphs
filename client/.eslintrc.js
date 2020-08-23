@@ -29,6 +29,7 @@ module.exports = {
         "@typescript-eslint/no-namespace": 1,
         "@typescript-eslint/ban-types": 0,
         "@typescript-eslint/no-inferrable-types": 0,
-        "@typescript-eslint/no-explicit-any": 0
+        "@typescript-eslint/no-explicit-any": 0,
+        "@typescript-eslint/no-use-before-define": 0
     }
 };
