@@ -1,6 +1,8 @@
 import { AppState, DispatchThunk } from "../../store";
 import { getUserId } from "../../auth/selectors";
 import {
+    DeleteActivityFailure,
+    DeleteActivityStart, DeleteActivitySuccess,
     FetchActivitiesForMonthFailure,
     FetchActivitiesForMonthStart,
     FetchActivitiesForMonthSuccess,
@@ -12,6 +14,7 @@ import {
     FetchAllActivitiesSuccess
 } from "./actions";
 import {
+    deleteActivity,
     getActivitiesForMonthReq,
     getActivityDetailsReq,
     getAllActivitiesReq
@@ -25,7 +28,7 @@ import { getTotalDistance } from "../../../lib/aggregations/distanceAggregations
 import { SpeedAndDistance } from "../../models/SpeedAndDistance";
 
 export function getAllActivitiesThunk() {
-    return async function (dispatch: DispatchThunk, getState: () => AppState) {
+    return async function (dispatch: DispatchThunk, getState: () => AppState): Promise<void> {
         const state = getState();
         const userId = getUserId(state);
 
@@ -44,7 +47,7 @@ export function getAllActivitiesThunk() {
 }
 
 export function getActivitiesForMonthThunk(month: number, year: number) {
-    return async function (dispatch: DispatchThunk, getState: () => AppState) {
+    return async function (dispatch: DispatchThunk, getState: () => AppState): Promise<void> {
         const state = getState();
         const userId = getUserId(state);
 
@@ -63,7 +66,7 @@ export function getActivitiesForMonthThunk(month: number, year: number) {
 }
 
 export function getActivityDetailsThunk(isoDate: string) {
-    return async function (dispatch: DispatchThunk, getState: () => AppState) {
+    return async function (dispatch: DispatchThunk, getState: () => AppState): Promise<void> {
         const state = getState();
         const userId = getUserId(state);
 
@@ -105,4 +108,26 @@ export function getActivityDetailsThunk(isoDate: string) {
             )
         );
     };
+}
+
+export function deleteActivityThunk(isoDate: string) {
+    return async function (dispatch: DispatchThunk, getState: () => AppState): Promise<void> {
+        const state = getState();
+        const userId = getUserId(state);
+
+        const activity = state.activities.byId[isoDate];
+
+        if (!activity) return;
+
+        dispatch(new DeleteActivityStart(isoDate))
+
+        try {
+            await deleteActivity(userId, isoDate);
+        } catch (e) {
+            dispatch(new DeleteActivityFailure(isoDate, activity, RequestError.create(e)));
+            return;
+        }
+
+        dispatch(new DeleteActivitySuccess(isoDate));
+    }
 }

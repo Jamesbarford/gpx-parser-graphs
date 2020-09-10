@@ -1,4 +1,4 @@
-import { getRequest } from "./MakeXMLRequest";
+import { deleteRequest, getRequest } from "./MakeXMLRequest";
 
 export async function getActivitiesForMonthReq(
     userId: string,
@@ -14,4 +14,8 @@ export async function getActivityDetailsReq(userId: string, date: string): Promi
 
 export async function getAllActivitiesReq(userId: string): Promise<any> {
     return getRequest(`/activities/${userId}`);
+}
+
+export async function deleteActivity(userId: string, isoDate: string): Promise<any> {
+    return deleteRequest(`/activities/userId/${userId}/date/${isoDate}`);
 }

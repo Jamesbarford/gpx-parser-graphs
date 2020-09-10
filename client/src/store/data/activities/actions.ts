@@ -11,7 +11,10 @@ export const enum ActivitiesActionTypes {
     FetchActivitiesForMonthSuccess = "Activities.FetchActivitiesForMonthSuccess",
     FetchActivityDetailsStart = "Activities.FetchActivityDetailsStart",
     FetchActivityDetailsFailure = "Activities.FetchActivityDetailsFailure",
-    FetchActivityDetailsSuccess = "Activities.FetchActivityDetailsSuccess"
+    FetchActivityDetailsSuccess = "Activities.FetchActivityDetailsSuccess",
+    DeleteActivityStart = "Activities.DeleteActivityStart",
+    DeleteActivityFailure = "Activities.DeleteActivityFailure",
+    DeleteActivitySuccess = "Activities.DeleteActivitySuccess"
 }
 
 export class FetchAllActivitiesStart {
@@ -64,6 +67,25 @@ export class FetchActivityDetailsSuccess {
     ) {}
 }
 
+export class DeleteActivityStart {
+    public readonly type = ActivitiesActionTypes.DeleteActivityStart;
+    public constructor(public readonly isoDate: string) {}
+}
+
+export class DeleteActivityFailure {
+    public readonly type = ActivitiesActionTypes.DeleteActivityFailure;
+    public constructor(
+        public readonly isoDate: string,
+        public readonly activity: Activity,
+        public readonly requestError: RequestError
+    ) {}
+}
+
+export class DeleteActivitySuccess {
+    public readonly type = ActivitiesActionTypes.DeleteActivitySuccess;
+    public constructor(public readonly isoDate: string) {}
+}
+
 export type ActivityActions =
     | FetchAllActivitiesStart
     | FetchAllActivitiesFailure
@@ -73,4 +95,7 @@ export type ActivityActions =
     | FetchActivitiesForMonthSuccess
     | FetchActivityDetailsStart
     | FetchActivityDetailsFailure
-    | FetchActivityDetailsSuccess;
+    | FetchActivityDetailsSuccess
+    | DeleteActivityStart
+    | DeleteActivityFailure
+    | DeleteActivitySuccess;

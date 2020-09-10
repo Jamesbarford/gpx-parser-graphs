@@ -86,10 +86,19 @@ export class CancelableRequest {
     ) {}
 }
 
-export async function getRequest(url: string) {
+export async function getRequest(url: string): Promise<any> {
     const setup = MakeXMLRequest.setupRequest({
         url,
         httpReqMethod: HttpReqMethod.GET
+    });
+
+    return setup.makeRequest();
+}
+
+export async function deleteRequest(url: string): Promise<any> {
+    const setup = MakeXMLRequest.setupRequest({
+        url,
+        httpReqMethod: HttpReqMethod.DELETE
     });
 
     return setup.makeRequest();

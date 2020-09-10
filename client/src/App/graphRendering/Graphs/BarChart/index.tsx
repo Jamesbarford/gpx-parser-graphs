@@ -24,6 +24,7 @@ interface BarChartProps {
 export class BarChart extends React.PureComponent<BarChartProps, BarChartState> {
     private svgRef: React.RefObject<SVGSVGElement> = React.createRef();
     private svgWrapper: React.RefObject<HTMLDivElement> = React.createRef();
+    private observer: ResizeObserver;
     public state: BarChartState = {
         width: 0,
         height: 400
@@ -36,11 +37,15 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             this.renderRectangles(this.svgRef.current);
         });
 
-        const observer = new ResizeObserver(entries => {
+        this.observer = new ResizeObserver(entries => {
             this.setState({ width: entries[0].contentRect.width - 100 });
         });
 
-        observer.observe(this.svgWrapper.current);
+        this.observer.observe(this.svgWrapper.current);
+    }
+
+    public componentWillUnmount(): void {
+        this.observer.disconnect();
     }
 
     private renderRectangles(svg: SVGSVGElement | null): void {
@@ -115,7 +120,7 @@ export class BarChart extends React.PureComponent<BarChartProps, BarChartState> 
             .text(`Minutes per ${this.props.activityData[0].distanceFormat}`);
     }
 
-    public render() {
+    public render(): JSX.Element {
         return (
             <div ref={this.svgWrapper}>
                 <svg

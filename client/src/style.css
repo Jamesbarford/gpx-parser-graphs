@@ -1,0 +1,31 @@
+.link-box {
+    position: relative;
+}
+
+.link-box__link {
+    overflow: hidden;
+    text-indent: 200%;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.link-box__contents a,
+.link-box__contents button,
+.link-box__contents--activity {
+    position: relative;
+    z-index: 1;
+}
+
+.link-box__contents--activity {
+    display: flex !important;
+    align-items: center;
+}
+
+.flex {
+    display: flex;
+}

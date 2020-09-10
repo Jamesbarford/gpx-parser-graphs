@@ -1,4 +1,5 @@
 import { RequestError } from "../../lib/persistance";
+import { Activity } from "../../store/data/activities/types";
 
 export const enum UploadGPXActionTypes {
     UploadGPXFileStart = "UploadGpx.UploadGPXFileStart",
@@ -18,6 +19,7 @@ export class UploadGPXFileFailure {
 
 export class UploadGPXFileSuccess {
     public readonly type = UploadGPXActionTypes.UploadGPXFileSuccess;
+    public constructor(public readonly activity: Activity) {}
 }
 
 export type UploadGPXActions = UploadGPXFileStart | UploadGPXFileFailure | UploadGPXFileSuccess;

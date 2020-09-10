@@ -1,6 +1,7 @@
+import produce from "immer";
+
 import { UploadGPXActions, UploadGPXActionTypes } from "./actions";
 import { Initial, Loading, RequestState, Success } from "../../lib/persistance";
-import { shallowUpdate } from "../../lib/util";
 
 export interface UploadGpxState {
     requestState: RequestState;
@@ -15,19 +16,18 @@ function initState(): UploadGpxState {
 export function uploadGpxReducer(state: UploadGpxState = initState(), action: UploadGPXActions) {
     switch (action.type) {
         case UploadGPXActionTypes.UploadGPXFileFailure:
-            return shallowUpdate(state, {
-                requestState: action.requestError
+            return produce(state, draftState => {
+                draftState.requestState = action.requestError;
             });
 
-
         case UploadGPXActionTypes.UploadGPXFileStart:
-            return shallowUpdate(state, {
-                requestState: new Loading()
+            return produce(state, draftState => {
+                draftState.requestState = new Loading();
             });
 
         case UploadGPXActionTypes.UploadGPXFileSuccess:
-            return shallowUpdate(state, {
-                requestState: new Success()
+            return produce(state, draftState => {
+                draftState.requestState = new Success();
             });
 
         default:

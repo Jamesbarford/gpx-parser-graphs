@@ -11,7 +11,7 @@ export class ActivitiesRepository implements IActivitiesRepository {
         this.toInsertStatement = this.toInsertStatement.bind(this);
     }
 
-    public async insertActivity(activity: ActivityWithData, userId: string): Promise<void> {
+    public async insertActivity(activity: ActivityWithData, userId: string): Promise<Activity> {
         try {
             await this.db.raw(
                 `
@@ -19,10 +19,13 @@ export class ActivitiesRepository implements IActivitiesRepository {
                 VALUES ('${userId}', '${activity.date}', 'run', '${activity.activityName}');
             `
             );
+
             await this.insertActivityData(activity.datum);
         } catch (e) {
             throw new Error(`Failed to insert activity: ${e}`);
         }
+
+        return new Activity(userId, activity.date, "run", activity.activityName);
     }
 
     private async insertActivityData(activityDataPoints: Array<ActivityDataPoint>): Promise<void> {
@@ -84,7 +87,11 @@ export class ActivitiesRepository implements IActivitiesRepository {
         }
     }
 
-    public async getActivitiesForMonth(userId: string, month: number, year: number): Promise<Activity[]> {
+    public async getActivitiesForMonth(
+        userId: string,
+        month: number,
+        year: number
+    ): Promise<Activity[]> {
         try {
             const dbResponse = await this.db.raw(`
                 SELECT * from activities
@@ -96,6 +103,18 @@ export class ActivitiesRepository implements IActivitiesRepository {
             return dbResponse.rows;
         } catch (e) {
             throw new Error(`Failed to get activities for: ${month}/${year}: ${e}`);
+        }
+    }
+
+    public async deleteActivity(userId: string, date: string): Promise<void> {
+        try {
+            await this.db.raw(`
+                DELETE from activities
+                WHERE user_id = '${userId}' AND activity_date = '${date}';
+                DELETE from activity_data WHERE user_id = '${userId}' AND activity_date = '${date}';
+            `);
+        } catch (e) {
+            throw new Error(`Failed to delete activity for: ${date}`);
         }
     }
 }

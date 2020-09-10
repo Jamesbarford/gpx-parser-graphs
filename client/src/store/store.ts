@@ -49,6 +49,6 @@ const enhancers = compose(
 
 export const store = createStore(reducers, enhancers);
 
-if(process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
     (<any>window).store = store
 }

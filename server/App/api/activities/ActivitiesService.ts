@@ -3,11 +3,12 @@ import { Activity } from "../../GPXParser/model/Activity";
 import { ActivityDetails } from "../../GPXParser/model/ActivityDetails";
 
 export interface IActivitiesRepository {
-    insertActivity(activity: ActivityWithData, userId: string): Promise<void>;
+    insertActivity(activity: ActivityWithData, userId: string): Promise<Activity>;
     getSingle(userId: string, activityDate: string): Promise<ActivityDetails[]>;
     getAll(userId: string): Promise<Activity[]>;
     getCount(userId: string): Promise<number>;
     getActivitiesForMonth(userId: string, month: number, year: number): Promise<Activity[]>;
+    deleteActivity(userId: string, date: string): Promise<void>;
 }
 
 interface UserRequest {
@@ -30,7 +31,7 @@ interface GetActivitiesForMonthRequest extends UserRequest {
 export class ActivitiesService {
     public constructor(private readonly activitiesRepository: IActivitiesRepository) {}
 
-    public async insertActivity(req: InsertActivityRequest): Promise<void> {
+    public async insertActivity(req: InsertActivityRequest): Promise<Activity> {
         return await this.activitiesRepository.insertActivity(req.activity, req.userId);
     }
 
@@ -48,5 +49,9 @@ export class ActivitiesService {
 
     public async getActivitiesForMonth(req: GetActivitiesForMonthRequest): Promise<Activity[]> {
         return await this.activitiesRepository.getActivitiesForMonth(req.userId, req.month, req.year);
+    }
+
+    public async deleteActivity(req: any): Promise<void> {
+        return await this.activitiesRepository.deleteActivity(req.userId, req.date);
     }
 }

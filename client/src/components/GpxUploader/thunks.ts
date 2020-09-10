@@ -4,9 +4,10 @@ import { isNil } from "lodash";
 import { UploadGPXFileFailure, UploadGPXFileStart, UploadGPXFileSuccess } from "./actions";
 import { RequestError } from "../../lib/persistance";
 import { postGPXFileReq } from "../../apiRequests/upload";
+import { toActivity } from "../../store/data/activities/apiConverter";
 
 export function uploadGPXThunk(gpxFile: File) {
-    return async function(dispatch: Dispatch<any>) {
+    return async function(dispatch: Dispatch<any>): Promise<void> {
         dispatch(new UploadGPXFileStart());
 
         try {
@@ -19,9 +20,10 @@ export function uploadGPXThunk(gpxFile: File) {
                     throw new Error("File could not be read");
                 }
 
-                await postGPXFileReq(contents.toString());
+                const res = await postGPXFileReq(contents.toString());
+                const activity = toActivity(res.data);
 
-                dispatch(new UploadGPXFileSuccess());
+                dispatch(new UploadGPXFileSuccess(activity));
             };
 
             fileReader.onerror = (event) => {

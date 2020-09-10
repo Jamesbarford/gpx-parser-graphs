@@ -47,9 +47,9 @@ ActivitiesRouter.post("/upload", async (req, res) => {
         const userId = req.body.userId;
         const activity = await getActivity(req.body.data, userId);
 
-        await activitiesService.insertActivity({ activity, userId });
+        const response = await activitiesService.insertActivity({ activity, userId });
 
-        return res.send(new Success(204));
+        return res.send(new Success(200, response));
     } catch (e) {
         log(e);
         return res.send(new RequestError(400, e.message));
@@ -83,3 +83,18 @@ ActivitiesRouter.get("/userId/:userId/date/:date", async (req, res) => {
         return res.send(new RequestError(400, e.message));
     }
 });
+
+ActivitiesRouter.delete("/userId/:userId/date/:date", async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const date = req.params.date;
+        const response = await activitiesService.deleteActivity({ userId, date });
+
+        return res.send(new Success(200, response));
+    } catch (e) {
+        log(e);
+        return res.send(new RequestError(400, e.message));
+    }
+    
+
+})

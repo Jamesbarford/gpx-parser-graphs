@@ -2,7 +2,11 @@ import { isNil } from "lodash";
 import { Activity } from "gpx-parser-lite";
 
 import { ActivityDataPoint } from "./ActivityDataPoint";
-import { parseAsNumberOrThrow, parseAsDateOrThrow, parseAsDateToISOString } from "../lib/parsers/parsers";
+import {
+    parseAsNumberOrThrow,
+    parseAsDateOrThrow,
+    parseAsDateToISOString
+} from "../lib/parsers/parsers";
 
 export class ActivityWithData {
     public constructor(
@@ -12,7 +16,11 @@ export class ActivityWithData {
     ) {}
 
     public static create(activity: Activity, userId: string) {
-        return new ActivityWithData(activity.date, activity.name, toDataPoints(activity, userId));
+        return new ActivityWithData(
+            parseAsDateToISOString(activity.date),
+            activity.name,
+            toDataPoints(activity, userId)
+        );
     }
 }
 
@@ -22,8 +30,6 @@ function toDataPoints(activity: Activity, userId: string): ActivityDataPoint[] {
 
     for (const a of activity.activityDataPoints) {
         try {
-
-
             if (isNil(a.timestamp)) {
                 throw new Error("Timestamp undefined for datapoint");
             }
@@ -35,10 +41,10 @@ function toDataPoints(activity: Activity, userId: string): ActivityDataPoint[] {
                     parseAsDateToISOString(a.timestamp),
                     activityDate,
                     userId,
-                    isNil(a.heartRate) ? undefined :  parseAsNumberOrThrow(a.heartRate),
+                    isNil(a.heartRate) ? undefined : parseAsNumberOrThrow(a.heartRate),
                     isNil(a.cadence) ? undefined : parseAsNumberOrThrow(a.cadence)
                 )
-            )
+            );
         } catch (e) {
             throw new Error(`Failed to parse data: ${e}`);
         }

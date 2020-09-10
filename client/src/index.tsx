@@ -3,6 +3,7 @@ import { isNil } from "lodash";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { CssBaseline } from "@material-ui/core";
+import "./style.css"
 
 import { store } from "./store/store";
 import { AppRouter } from "./App/Router";
